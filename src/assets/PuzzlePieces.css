@@ -1,5 +1,8 @@
 .puzzle-piece {
-    width: 100%;
-    height: 100%;
-    border: 3px solid #4a3131;
+    width: 25%; /* 25% width for a 4x4 grid (100% / 4 = 25%) */
+    height: 25%; /* 25% height for a 4x4 grid */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    border: 1px solid #ccc; /* Optional border for visibility */
+    object-fit: cover; /* Ensure the image fills the piece without distortion */
+    cursor: pointer; /* Pointer cursor to indicate interactivity */
 }
