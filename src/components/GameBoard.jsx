@@ -7,7 +7,7 @@ import PuzzlePiece from './PuzzlePiece.jsx';
 const GameBoard = () => {
     const [pieces, setPieces] = useState([]);
     const [positions, setPositions] = useState(
-        Array(16).fill({ x: 0, y: 0 }) // Assuming a 4x4 puzzle with 16 pieces
+        Array(16).fill({ x: 0, y: 0 }) // Initialize positions for 16 pieces
     );
 
     // Set up the drop target using `useDrop`

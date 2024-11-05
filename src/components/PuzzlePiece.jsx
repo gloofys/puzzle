@@ -10,15 +10,6 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 } }) => {
             isDragging: !!monitor.isDragging(),
         }),
     }));
-    PuzzlePiece.propTypes = {
-        piece: PropTypes.string.isRequired, // Adjust type as needed
-        index: PropTypes.number.isRequired,
-        position: PropTypes.shape({
-            x: PropTypes.number.isRequired,
-            y: PropTypes.number.isRequired,
-        }).isRequired,
-    };
-
     // Log when the component re-renders and position changes
     useEffect(() => {
         console.log(`Re-rendering piece ${index} with position:`, position);
@@ -39,6 +30,15 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 } }) => {
             }}
         />
     );
+};
+
+PuzzlePiece.propTypes = {
+    piece: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    position: PropTypes.shape({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+    }).isRequired,
 };
 
 export default PuzzlePiece;
