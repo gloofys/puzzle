@@ -56,16 +56,16 @@ const PuzzleImage = () => {
 
     return (
         <div className="puzzle-image">
-            {pieces.map((piece, index) => (
-                <PuzzlePiece
-                    key={index}
-                    piece={piece.src}
-                    index={index}
-                    position={positions[index]} // Use the initialized position
-                    correctX={piece.correctX}
-                    correctY={piece.correctY}
-                />
-            ))}
+            {pieces.map((piece, index) => {
+                return (
+                    <PuzzlePiece
+                        key={index}
+                        piece={piece.src}
+                        index={index}
+                        position={positions[index]}
+                    />
+                );
+            })}
         </div>
     );
 };

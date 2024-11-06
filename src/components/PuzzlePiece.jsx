@@ -1,4 +1,4 @@
-import  { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import PropTypes from 'prop-types';
 
@@ -10,9 +10,9 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 } }) => {
             isDragging: !!monitor.isDragging(),
         }),
     }));
-    // Log when the component re-renders and position changes
+
     useEffect(() => {
-        console.log(`Re-rendering piece ${index} with position:`, position);
+        console.log(`PuzzlePiece ${index} received updated position:`, position);
     }, [index, position]);
 
     return (
@@ -25,8 +25,8 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 } }) => {
                 opacity: isDragging ? 0.5 : 1,
                 cursor: 'grab',
                 position: 'absolute',
-                left: `${position.x}px`,
-                top: `${position.y}px`,
+                left: `${position.x}px`, // Ensure these are correctly set
+                top: `${position.y}px`,  // Ensure these are correctly set
             }}
         />
     );
