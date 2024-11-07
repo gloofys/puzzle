@@ -50,22 +50,21 @@ const PuzzleImage = () => {
             }
 
             setPieces(newPieces);
-            setPositions(initialPositions); // Set the initial positions
+            setPositions(initialPositions);
+            console.log('Initial positions set:', initialPositions); // Log initial state
         };
     }, []);
 
     return (
         <div className="puzzle-image">
-            {pieces.map((piece, index) => {
-                return (
-                    <PuzzlePiece
-                        key={index}
-                        piece={piece.src}
-                        index={index}
-                        position={positions[index]}
-                    />
-                );
-            })}
+            {pieces.map((piece, index) => (
+                <PuzzlePiece
+                    key={index}
+                    piece={piece.src}
+                    index={index}
+                    position={positions[index]}
+                />
+            ))}
         </div>
     );
 };
