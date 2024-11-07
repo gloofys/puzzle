@@ -4,5 +4,5 @@
     border: 2px solid #000; /* Add a border for visibility */
     background-color: #f0f0f0; /* Background color for the game board */
     font-size: 0; /* Remove whitespace between inline elements */
-    position: relative; /* Make the game board the reference for absolute positioning */
+
 }

@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import puzzleImage from '/muhu.webp';
 import '/src/assets/PuzzlePieces.css';
-import PuzzlePiece from './PuzzlePiece.jsx'; // Import PuzzlePiece
 
-const PuzzleImage = () => {
-    const [pieces, setPieces] = useState([]);
-    const [positions, setPositions] = useState([]);
-
+const PuzzleImage = ({ setPieces, setInitialPositions }) => {
     useEffect(() => {
         const image = new Image();
         image.src = puzzleImage;
         image.onload = () => {
+            console.log('Image loaded with dimensions:', image.width, image.height);
+
             const rows = 4;
             const cols = 4;
             const pieceWidth = image.width / cols;
             const pieceHeight = image.height / rows;
+
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
 
@@ -25,7 +25,8 @@ const PuzzleImage = () => {
                 for (let col = 0; col < cols; col++) {
                     canvas.width = pieceWidth;
                     canvas.height = pieceHeight;
-                    ctx.clearRect(0, 0, pieceWidth, pieceHeight); // Clear canvas before drawing
+                    ctx.clearRect(0, 0, pieceWidth, pieceHeight);
+
                     ctx.drawImage(
                         image,
                         col * pieceWidth,
@@ -40,33 +41,34 @@ const PuzzleImage = () => {
 
                     newPieces.push({
                         src: canvas.toDataURL(),
-                        correctX: col * pieceWidth, // Save the correct X position
-                        correctY: row * pieceHeight, // Save the correct Y position
+                        correctX: col * pieceWidth,
+                        correctY: row * pieceHeight,
                     });
 
-                    // Set initial position to (0, 0) or wherever you want
-                    initialPositions.push({ x: 0, y: 0 });
+                    // Set initial random positions for the pieces
+                    initialPositions.push({
+                        x: Math.random() * (window.innerWidth - pieceWidth),
+                        y: Math.random() * (window.innerHeight - pieceHeight)
+                    });
                 }
             }
 
             setPieces(newPieces);
-            setPositions(initialPositions);
-            console.log('Initial positions set:', initialPositions); // Log initial state
+            setInitialPositions(initialPositions);
+            console.log('Initial positions set:', initialPositions);
         };
-    }, []);
 
-    return (
-        <div className="puzzle-image">
-            {pieces.map((piece, index) => (
-                <PuzzlePiece
-                    key={index}
-                    piece={piece.src}
-                    index={index}
-                    position={positions[index]}
-                />
-            ))}
-        </div>
-    );
+        image.onerror = () => {
+            console.error('Failed to load image. Please check the image path.');
+        };
+    }, [setPieces, setInitialPositions]);
+
+    return null; // No direct rendering; just setup logic
+};
+
+PuzzleImage.propTypes = {
+    setPieces: PropTypes.func.isRequired,
+    setInitialPositions: PropTypes.func.isRequired,
 };
 
 export default PuzzleImage;

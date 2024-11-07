@@ -25,8 +25,8 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 } }) => {
                 opacity: isDragging ? 0.5 : 1,
                 cursor: 'grab',
                 position: 'absolute',
-                left: `${position.x}px`, // Ensure these are correctly set
-                top: `${position.y}px`,  // Ensure these are correctly set
+                left: `${position.x}px`,
+                top: `${position.y}px`,
             }}
         />
     );
