@@ -8,12 +8,12 @@ import GameBoard from "./components/GameBoard.jsx";
 function App() {
     return (
         <DndProvider backend={HTML5Backend}>
+
             <div>
-                <GameBoard/>
+                <GameBoard />
             </div>
         </DndProvider>
     );
 }
 
 export default App;
-

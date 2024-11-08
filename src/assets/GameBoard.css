@@ -1,8 +1,16 @@
-.game-board {
-    width: 600px; /* Set the width of the game board */
-    height: 600px; /* Set the height of the game board */
-    border: 2px solid #000; /* Add a border for visibility */
-    background-color: #f0f0f0; /* Background color for the game board */
-    font-size: 0; /* Remove whitespace between inline elements */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Full height of the viewport */
+    overflow: hidden; /* Prevent scrolling */
+}
 
+.game-board {
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    border: 2px solid #000;
+    background-color: #f0f0f0;
+    position: fixed; /* Stays in place even when scrolling */
+    top: 0;
+    left: 0;
 }
