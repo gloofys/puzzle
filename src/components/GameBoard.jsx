@@ -11,9 +11,8 @@ const GameBoard = () => {
     const [, drop] = useDrop(() => ({
         accept: 'puzzle-piece',
         drop: (item, monitor) => {
-            const offset = monitor.getSourceClientOffset(); // Get offset relative to the viewport
+            const offset = monitor.getSourceClientOffset();
             if (offset) {
-                // Update position based on viewport coordinates
                 setPositions((prevPositions) => {
                     const updatedPositions = [...prevPositions];
                     updatedPositions[item.index] = { x: offset.x, y: offset.y };
@@ -33,7 +32,7 @@ const GameBoard = () => {
             {pieces.map((piece, index) => (
                 <PuzzlePiece
                     key={index}
-                    piece={piece.src}
+                    piece={piece} // Pass the whole object, not just piece.src
                     index={index}
                     position={positions[index] || { x: 0, y: 0 }} // Fallback for initial render
                 />

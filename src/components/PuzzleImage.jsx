@@ -8,54 +8,62 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
         const image = new Image();
         image.src = puzzleImage;
         image.onload = () => {
-            console.log('Image loaded with dimensions:', image.width, image.height);
-
             const rows = 4;
             const cols = 4;
-            const pieceWidth = image.width / cols;
-            const pieceHeight = image.height / rows;
+
+            const gameBoardWidth = window.innerWidth; // Adjust based on actual GameBoard width if known
+            const gameBoardHeight = window.innerHeight;
+
+            // Scaling factor to resize coordinates from the image to GameBoard
+            const scaleX = gameBoardWidth / image.width;
+            const scaleY = gameBoardHeight / image.height;
+
+            const pieceWidth = (image.width / cols) * scaleX;
+            const pieceHeight = (image.height / rows) * scaleY;
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
+            canvas.width = pieceWidth;
+            canvas.height = pieceHeight;
 
             const newPieces = [];
             const initialPositions = [];
 
             for (let row = 0; row < rows; row++) {
                 for (let col = 0; col < cols; col++) {
-                    canvas.width = pieceWidth;
-                    canvas.height = pieceHeight;
                     ctx.clearRect(0, 0, pieceWidth, pieceHeight);
-
                     ctx.drawImage(
                         image,
-                        col * pieceWidth,
-                        row * pieceHeight,
-                        pieceWidth,
-                        pieceHeight,
+                        col * (image.width / cols),
+                        row * (image.height / rows),
+                        image.width / cols,
+                        image.height / rows,
                         0,
                         0,
                         pieceWidth,
                         pieceHeight
                     );
 
+                    const pieceSrc = canvas.toDataURL();
+                    const correctX = col * pieceWidth;
+                    const correctY = row * pieceHeight;
+
                     newPieces.push({
-                        src: canvas.toDataURL(),
-                        correctX: col * pieceWidth,
-                        correctY: row * pieceHeight,
+                        src: pieceSrc,
+                        correctX,
+                        correctY,
                     });
 
-                    // Set initial random positions for the pieces
-                    initialPositions.push({
-                        x: Math.random() * (window.innerWidth - pieceWidth),
-                        y: Math.random() * (window.innerHeight - pieceHeight)
-                    });
+                    const initialX = Math.random() * (gameBoardWidth - pieceWidth);
+                    const initialY = Math.random() * (gameBoardHeight - pieceHeight);
+                    initialPositions.push({ x: initialX, y: initialY });
+
+                    console.log(`Piece [${row}, ${col}] - Correct Position (scaled): X=${correctX}, Y=${correctY}`);
                 }
             }
 
             setPieces(newPieces);
             setInitialPositions(initialPositions);
-            console.log('Initial positions set:', initialPositions);
         };
 
         image.onerror = () => {
@@ -63,7 +71,7 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
         };
     }, [setPieces, setInitialPositions]);
 
-    return null; // No direct rendering; just setup logic
+    return null;
 };
 
 PuzzleImage.propTypes = {

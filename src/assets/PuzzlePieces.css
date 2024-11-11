@@ -1,6 +1,4 @@
 .puzzle-piece {
-    width: 150px; /* 600px / 4 = 150px per piece */
-    height: 150px; /* 600px / 4 = 150px per piece */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     border: 1px solid #ccc; /* Optional border for visibility */
     object-fit: cover; /* Ensure the image fills the piece without distortion */
