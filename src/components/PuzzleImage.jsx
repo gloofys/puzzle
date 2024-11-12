@@ -15,8 +15,8 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
             const gameBoardHeight = window.innerHeight;
 
             // Define puzzle area as 80% of the GameBoard size
-            const puzzleAreaWidth = gameBoardWidth * 0.8;
-            const puzzleAreaHeight = gameBoardHeight * 0.8;
+            const puzzleAreaWidth = gameBoardWidth * 0.7;
+            const puzzleAreaHeight = gameBoardHeight * 0.7;
 
             // Calculate offset to center the puzzle area within GameBoard
             const offsetX = (gameBoardWidth - puzzleAreaWidth) / 2;
