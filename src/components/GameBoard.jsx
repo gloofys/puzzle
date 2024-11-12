@@ -27,7 +27,7 @@ const GameBoard = () => {
     }, [positions]);
 
     return (
-        <div className="game-board" ref={drop}>
+        <div className="game-board-wrapper" ref={drop}>
             <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} />
             {pieces.map((piece, index) => (
                 <PuzzlePiece

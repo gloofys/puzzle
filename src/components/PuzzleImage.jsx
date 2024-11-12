@@ -11,12 +11,20 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
             const rows = 4;
             const cols = 4;
 
-            const gameBoardWidth = window.innerWidth; // Adjust based on actual GameBoard width if known
+            const gameBoardWidth = window.innerWidth; // Or get actual GameBoard width if possible
             const gameBoardHeight = window.innerHeight;
 
-            // Scaling factor to resize coordinates from the image to GameBoard
-            const scaleX = gameBoardWidth / image.width;
-            const scaleY = gameBoardHeight / image.height;
+            // Define puzzle area as 80% of the GameBoard size
+            const puzzleAreaWidth = gameBoardWidth * 0.8;
+            const puzzleAreaHeight = gameBoardHeight * 0.8;
+
+            // Calculate offset to center the puzzle area within GameBoard
+            const offsetX = (gameBoardWidth - puzzleAreaWidth) / 2;
+            const offsetY = (gameBoardHeight - puzzleAreaHeight) / 2;
+
+            // Calculate scaling based on the puzzle area instead of the full GameBoard
+            const scaleX = puzzleAreaWidth / image.width;
+            const scaleY = puzzleAreaHeight / image.height;
 
             const pieceWidth = (image.width / cols) * scaleX;
             const pieceHeight = (image.height / rows) * scaleY;
@@ -45,8 +53,10 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
                     );
 
                     const pieceSrc = canvas.toDataURL();
-                    const correctX = col * pieceWidth;
-                    const correctY = row * pieceHeight;
+
+                    // Calculate the correct position within the centered puzzle area
+                    const correctX = offsetX + col * pieceWidth;
+                    const correctY = offsetY + row * pieceHeight;
 
                     newPieces.push({
                         src: pieceSrc,
@@ -54,11 +64,12 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
                         correctY,
                     });
 
+                    // Generate random initial positions for each piece
                     const initialX = Math.random() * (gameBoardWidth - pieceWidth);
                     const initialY = Math.random() * (gameBoardHeight - pieceHeight);
                     initialPositions.push({ x: initialX, y: initialY });
 
-                    console.log(`Piece [${row}, ${col}] - Correct Position (scaled): X=${correctX}, Y=${correctY}`);
+                    console.log(`Piece [${row}, ${col}] - Correct Position (centered): X=${correctX}, Y=${correctY}`);
                 }
             }
 

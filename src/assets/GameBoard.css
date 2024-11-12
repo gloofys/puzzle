@@ -1,16 +1,45 @@
+/* Reset body and html */
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%; /* Full height of the viewport */
-    overflow: hidden; /* Prevent scrolling */
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+}
+
+.header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    flex-shrink: 0; /* Prevents shrinking */
+}
+
+.game-wrapper {
+    flex-grow: 1; /* Takes the remaining height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-board-wrapper {
+    width: 100vw; /* 80% of viewport width */
+    height: 80vw; /* 80% of viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dfd7d7;
+}
 .game-board {
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    width: 100%; /* Full width of the container */
+    height: 100%; /* Full height of the container */
     border: 2px solid #000;
     background-color: #f0f0f0;
-    position: fixed; /* Stays in place even when scrolling */
-    top: 0;
-    left: 0;
+    /* Remove position: fixed */
 }

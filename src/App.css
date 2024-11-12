@@ -1,5 +1,37 @@
-#root {
-  max-width: 1280px;
-  text-align: center;
+/* Reset body and html */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+}
+
+.header {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  flex-shrink: 0; /* Prevents shrinking */
+}
+
+.game-wrapper {
+  flex-grow: 1; /* Takes the remaining height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-board-wrapper {
+  width: 80vw; /* 80% of viewport width */
+  height: 80vh; /* 80% of viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
