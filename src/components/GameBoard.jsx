@@ -4,13 +4,15 @@ import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
 import PuzzleImage from './PuzzleImage.jsx';
 
-const SNAP_TOLERANCE = 100;
+const SNAP_TOLERANCE = 30;
 
 const GameBoard = () => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const piecesRef = useRef(pieces);
     const [lockedPositions, setLockedPositions] = useState([]);
+    const [zIndexes, setZIndexes] = useState({}); // Track z-index for each piece
+    const [zIndexCounter, setZIndexCounter] = useState(100); // Start z-index counter
 
     useEffect(() => {
         piecesRef.current = pieces;
@@ -33,12 +35,18 @@ const GameBoard = () => {
                             x: correctPosition.correctX,
                             y: correctPosition.correctY,
                         };
-                        setLockedPositions((prevLocked) =>
-                            prevLocked.includes(item.index) ? prevLocked : [...prevLocked, item.index]
-                        );
+                        setLockedPositions((prevLocked) => [...prevLocked, item.index]);
                     } else {
                         updatedPositions[item.index] = { x: offset.x, y: offset.y };
                     }
+
+                    // Update zIndex for the moved piece
+                    setZIndexes((prevZIndexes) => ({
+                        ...prevZIndexes,
+                        [item.index]: zIndexCounter,
+                    }));
+                    setZIndexCounter((prevCounter) => prevCounter + 1);
+
                     return updatedPositions;
                 });
             }
@@ -47,8 +55,7 @@ const GameBoard = () => {
 
     useEffect(() => {
         console.log('Positions state in GameBoard:', positions);
-        console.log('Locked Positions:', lockedPositions);
-    }, [positions, lockedPositions]);
+    }, [positions]);
 
     return (
         <div className="game-board-wrapper" ref={drop}>
@@ -60,6 +67,7 @@ const GameBoard = () => {
                     index={index}
                     position={positions[index] || { x: 0, y: 0 }}
                     isLocked={lockedPositions.includes(index)}
+                    zIndex={zIndexes[index] || 1} // Assign higher z-index for unlocked pieces
                 />
             ))}
         </div>

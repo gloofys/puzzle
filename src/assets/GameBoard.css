@@ -34,7 +34,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #dfd7d7;
+    background-color: #acd3f3;
 }
 .game-board {
     width: 100%; /* Full width of the container */
