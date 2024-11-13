@@ -4,4 +4,5 @@
     object-fit: cover; /* Ensure the image fills the piece without distortion */
     cursor: pointer; /* Pointer cursor to indicate interactivity */
     position: absolute; /* Needed for free placement */
+
 }

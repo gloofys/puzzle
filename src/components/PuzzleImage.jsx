@@ -26,8 +26,9 @@ const PuzzleImage = ({ setPieces, setInitialPositions }) => {
             const scaleX = puzzleAreaWidth / image.width;
             const scaleY = puzzleAreaHeight / image.height;
 
-            const pieceWidth = (image.width / cols) * scaleX;
-            const pieceHeight = (image.height / rows) * scaleY;
+            const pieceWidth = Math.ceil((image.width / cols) * scaleX);
+            const pieceHeight = Math.ceil((image.height / rows) * scaleY);
+
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
