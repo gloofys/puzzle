@@ -1,0 +1,28 @@
+.color-selector {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.color-options {
+    display: flex;
+    gap: 8px; /* Space between color swatches */
+    margin-left: 10px;
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.selected {
+    border-color: #333; /* Highlight selected color */
+}

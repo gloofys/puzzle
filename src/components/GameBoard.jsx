@@ -6,7 +6,8 @@ import PuzzleImage from './PuzzleImage.jsx';
 
 const SNAP_TOLERANCE = 30;
 
-const GameBoard = () => {
+// eslint-disable-next-line react/prop-types
+const GameBoard = ({ bgColor }) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const piecesRef = useRef(pieces);
@@ -58,7 +59,7 @@ const GameBoard = () => {
     }, [positions]);
 
     return (
-        <div className="game-board-wrapper" ref={drop}>
+        <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor }}>
             <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} />
             {pieces.map((piece, index) => (
                 <PuzzlePiece
