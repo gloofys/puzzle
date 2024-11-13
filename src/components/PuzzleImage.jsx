@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import puzzleImage from '/muhu.webp';
+import puzzleImage from '/est_forest_vary.png';
 import '/src/assets/PuzzlePieces.css';
 
 const PuzzleImage = ({ setPieces, setInitialPositions }) => {

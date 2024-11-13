@@ -4,7 +4,7 @@ import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
 import PuzzleImage from './PuzzleImage.jsx';
 
-const SNAP_TOLERANCE = 30;
+const SNAP_TOLERANCE = 40;
 
 // eslint-disable-next-line react/prop-types
 const GameBoard = ({ bgColor }) => {
