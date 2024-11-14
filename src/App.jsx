@@ -1,20 +1,33 @@
 import './App.css';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import GameBoard from './components/GameBoard.jsx';
-import Header from './components/Header.jsx';
-import {useState} from "react";
+import GameBoard from './components/GameBoard';
+import Header from './components/Header';
+import NewGameDialog from './components/NewGameDialog';
+import { useState } from 'react';
 
 function App() {
-    const [bgColor, setBgColor] = useState('#f0f0f0'); // Default background color
+    const [bgColor, setBgColor] = useState('#f0f0f0');
+    const [rows, setRows] = useState(4);
+    const [columns, setColumns] = useState(4);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const handleNewGame = ({ rows, columns }) => {
+        setRows(rows);
+        setColumns(columns);
+        setIsDialogOpen(false);
+    };
 
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="app-container">
-                <Header bgColor={bgColor} onChange={setBgColor} />
+                <Header bgColor={bgColor} onChange={setBgColor} onOpenNewGame={() => setIsDialogOpen(true)} />
                 <main className="game-wrapper">
-                    <GameBoard bgColor={bgColor} />
+                    <GameBoard bgColor={bgColor} rows={rows} columns={columns} />
                 </main>
+                {isDialogOpen && (
+                    <NewGameDialog onStartGame={handleNewGame} />
+                )}
             </div>
         </DndProvider>
     );

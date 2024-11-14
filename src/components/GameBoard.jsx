@@ -7,11 +7,11 @@ import PuzzleImage from './PuzzleImage.jsx';
 const SNAP_TOLERANCE = 40;
 
 // eslint-disable-next-line react/prop-types
-const GameBoard = ({ bgColor }) => {
+const GameBoard = ({ bgColor, rows, columns }) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
-    const [isPuzzleComplete, setIsPuzzleComplete] = useState(false); // New state to track puzzle completion
+    const [isPuzzleComplete, setIsPuzzleComplete] = useState(false);
     const piecesRef = useRef(pieces);
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
@@ -21,7 +21,6 @@ const GameBoard = ({ bgColor }) => {
     }, [pieces]);
 
     useEffect(() => {
-        // Check if all pieces are locked in place
         if (lockedPositions.length === pieces.length) {
             setIsPuzzleComplete(true);
         }
@@ -68,7 +67,7 @@ const GameBoard = ({ bgColor }) => {
 
     return (
         <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor }}>
-            <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} />
+            <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} rows={rows} columns={columns} />
             {pieces.map((piece, index) => (
                 <PuzzlePiece
                     key={index}
@@ -77,7 +76,7 @@ const GameBoard = ({ bgColor }) => {
                     position={positions[index] || { x: 0, y: 0 }}
                     isLocked={lockedPositions.includes(index)}
                     zIndex={zIndexes[index] || 1}
-                    isPuzzleComplete={isPuzzleComplete} // Pass the completion status
+                    isPuzzleComplete={isPuzzleComplete}
                 />
             ))}
         </div>
