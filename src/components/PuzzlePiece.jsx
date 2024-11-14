@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import PropTypes from 'prop-types';
 
-const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex }) => {
+const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex, isPuzzleComplete }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'puzzle-piece',
         item: { index },
@@ -34,7 +34,8 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex
                 position: 'absolute',
                 left: `${position.x}px`,
                 top: `${position.y}px`,
-                zIndex: isLocked ? 1 : zIndex, // Set zIndex for positioning
+                zIndex: isLocked ? 1 : zIndex,
+                border: isLocked && isPuzzleComplete ? 'none' : '1px solid #ccc', // Only show border if not locked or puzzle not complete
             }}
         />
     );
@@ -53,6 +54,7 @@ PuzzlePiece.propTypes = {
     }).isRequired,
     isLocked: PropTypes.bool.isRequired,
     zIndex: PropTypes.number.isRequired,
+    isPuzzleComplete: PropTypes.bool.isRequired, // Ensure completion status is passed as a prop
 };
 
 export default PuzzlePiece;

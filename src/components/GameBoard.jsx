@@ -10,14 +10,22 @@ const SNAP_TOLERANCE = 40;
 const GameBoard = ({ bgColor }) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
-    const piecesRef = useRef(pieces);
     const [lockedPositions, setLockedPositions] = useState([]);
-    const [zIndexes, setZIndexes] = useState({}); // Track z-index for each piece
-    const [zIndexCounter, setZIndexCounter] = useState(100); // Start z-index counter
+    const [isPuzzleComplete, setIsPuzzleComplete] = useState(false); // New state to track puzzle completion
+    const piecesRef = useRef(pieces);
+    const [zIndexes, setZIndexes] = useState({});
+    const [zIndexCounter, setZIndexCounter] = useState(100);
 
     useEffect(() => {
         piecesRef.current = pieces;
     }, [pieces]);
+
+    useEffect(() => {
+        // Check if all pieces are locked in place
+        if (lockedPositions.length === pieces.length) {
+            setIsPuzzleComplete(true);
+        }
+    }, [lockedPositions, pieces]);
 
     const [, drop] = useDrop(() => ({
         accept: 'puzzle-piece',
@@ -68,7 +76,8 @@ const GameBoard = ({ bgColor }) => {
                     index={index}
                     position={positions[index] || { x: 0, y: 0 }}
                     isLocked={lockedPositions.includes(index)}
-                    zIndex={zIndexes[index] || 1} // Assign higher z-index for unlocked pieces
+                    zIndex={zIndexes[index] || 1}
+                    isPuzzleComplete={isPuzzleComplete} // Pass the completion status
                 />
             ))}
         </div>
