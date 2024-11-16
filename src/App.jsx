@@ -11,10 +11,12 @@ function App() {
     const [rows, setRows] = useState(4);
     const [columns, setColumns] = useState(4);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [gameId, setGameId] = useState(0); // Unique identifier for each game
 
     const handleNewGame = ({ rows, columns }) => {
         setRows(rows);
         setColumns(columns);
+        setGameId((prevGameId) => prevGameId + 1); // Increment the gameId
         setIsDialogOpen(false);
     };
 
@@ -23,7 +25,7 @@ function App() {
             <div className="app-container">
                 <Header bgColor={bgColor} onChange={setBgColor} onOpenNewGame={() => setIsDialogOpen(true)} />
                 <main className="game-wrapper">
-                    <GameBoard bgColor={bgColor} rows={rows} columns={columns} />
+                    <GameBoard key={gameId} bgColor={bgColor} rows={rows} columns={columns} />
                 </main>
                 {isDialogOpen && (
                     <NewGameDialog onStartGame={handleNewGame} />

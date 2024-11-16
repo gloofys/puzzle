@@ -16,6 +16,15 @@ const GameBoard = ({ bgColor, rows, columns }) => {
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
 
+    // Reset the puzzle state when rows and columns change (new game)
+    useEffect(() => {
+        setPositions([]);
+        setLockedPositions([]);
+        setIsPuzzleComplete(false);
+        setZIndexes({});
+        setZIndexCounter(100);
+    }, [rows, columns]);
+
     useEffect(() => {
         piecesRef.current = pieces;
     }, [pieces]);
