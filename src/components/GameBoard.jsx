@@ -4,10 +4,10 @@ import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
 import PuzzleImage from './PuzzleImage.jsx';
 
-const SNAP_TOLERANCE = 40;
+const SNAP_TOLERANCE = 50;
 
 // eslint-disable-next-line react/prop-types
-const GameBoard = ({ bgColor, rows, columns }) => {
+const GameBoard = ({ bgColor, rows, columns,  image }) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
@@ -76,7 +76,7 @@ const GameBoard = ({ bgColor, rows, columns }) => {
 
     return (
         <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor }}>
-            <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} rows={rows} columns={columns} />
+            <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} rows={rows} columns={columns} image={image} />
             {pieces.map((piece, index) => (
                 <PuzzlePiece
                     key={index}

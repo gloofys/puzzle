@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import puzzleImage from '/est_forest_vary.png';
 import '/src/assets/PuzzlePieces.css';
 
-const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns }) => {
+const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) => {
     useEffect(() => {
-        const image = new Image();
-        image.src = puzzleImage;
-        image.onload = () => {
+        const img = new Image();
+        img.src = image;
+        img.onload = () => {
             const gameBoardWidth = window.innerWidth;
             const gameBoardHeight = window.innerHeight;
 
@@ -19,13 +18,11 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns }) => {
             const offsetX = (gameBoardWidth - puzzleAreaWidth) / 2;
             const offsetY = (gameBoardHeight - puzzleAreaHeight) / 2;
 
-            // Calculate scaling based on the puzzle area instead of the full GameBoard
-            const scaleX = puzzleAreaWidth / image.width;
-            const scaleY = puzzleAreaHeight / image.height;
+            const scaleX = puzzleAreaWidth / img.width;
+            const scaleY = puzzleAreaHeight / img.height;
 
-            const pieceWidth = Math.ceil((image.width / columns) * scaleX);
-            const pieceHeight = Math.ceil((image.height / rows) * scaleY);
-
+            const pieceWidth = Math.ceil((img.width / columns) * scaleX);
+            const pieceHeight = Math.ceil((img.height / rows) * scaleY);
 
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -39,11 +36,11 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns }) => {
                 for (let col = 0; col < columns; col++) {
                     ctx.clearRect(0, 0, pieceWidth, pieceHeight);
                     ctx.drawImage(
-                        image,
-                        col * (image.width / columns),
-                        row * (image.height / rows),
-                        image.width / columns,
-                        image.height / rows,
+                        img,
+                        col * (img.width / columns),
+                        row * (img.height / rows),
+                        img.width / columns,
+                        img.height / rows,
                         0,
                         0,
                         pieceWidth,
@@ -75,10 +72,10 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns }) => {
             setInitialPositions(initialPositions);
         };
 
-        image.onerror = () => {
-            console.error('Failed to load image. Please check the image path.');
+        img.onerror = () => {
+            console.error('Failed to load image:', image);
         };
-    }, [setPieces, setInitialPositions, rows, columns]); // Add rows and columns as dependencies
+    }, [setPieces, setInitialPositions, rows, columns, image]);
 
     return null;
 };
@@ -88,6 +85,7 @@ PuzzleImage.propTypes = {
     setInitialPositions: PropTypes.func.isRequired,
     rows: PropTypes.number.isRequired,
     columns: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired, // New prop for the selected image
 };
 
 export default PuzzleImage;

@@ -20,7 +20,7 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex
     const distance = Math.sqrt(
         Math.pow(position.x - piece.correctX, 2) + Math.pow(position.y - piece.correctY, 2)
     );
-    const calculatedOpacity = Math.max(0.3, 1 - distance / 700); // Adjust sensitivity if needed
+    const calculatedOpacity = Math.max(0.25, 1 - distance / 900); // Adjust sensitivity if needed
 
     return (
         <img
