@@ -48,27 +48,43 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
                     const distanceY = Math.abs(offset.y - correctPosition.correctY);
 
                     if (distanceX <= SNAP_TOLERANCE && distanceY <= SNAP_TOLERANCE) {
+                        // Snap to correct position
                         updatedPositions[item.index] = {
                             x: correctPosition.correctX,
                             y: correctPosition.correctY,
                         };
                         setLockedPositions((prevLocked) => [...prevLocked, item.index]);
                     } else {
+                        // Update to the dropped position
                         updatedPositions[item.index] = { x: offset.x, y: offset.y };
                     }
 
-                    // Update zIndex for the moved piece
-                    setZIndexes((prevZIndexes) => ({
-                        ...prevZIndexes,
-                        [item.index]: zIndexCounter,
-                    }));
+                    return updatedPositions;
+                });
+
+                // Update z-index for all pieces, ensuring no piece remains stuck below
+                setZIndexes((prevZIndexes) => {
+                    const newZIndexes = { ...prevZIndexes };
+
+                    // Ensure all pieces have a baseline z-index
+                    piecesRef.current.forEach((_, idx) => {
+                        if (!newZIndexes[idx]) {
+                            newZIndexes[idx] = zIndexCounter + idx; // Incrementally assign for untouched pieces
+                        }
+                    });
+
+                    // Set the moved piece to the highest z-index
+                    newZIndexes[item.index] = zIndexCounter;
+
+                    // Increment zIndexCounter for the next interaction
                     setZIndexCounter((prevCounter) => prevCounter + 1);
 
-                    return updatedPositions;
+                    return newZIndexes;
                 });
             }
         },
     }));
+
 
     useEffect(() => {
         console.log('Positions state in GameBoard:', positions);

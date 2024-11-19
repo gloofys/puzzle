@@ -29,13 +29,13 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex
             alt={`Puzzle piece ${index}`}
             className="puzzle-piece"
             style={{
-                opacity: isLocked ? 1 : isDragging ? 0.5 : calculatedOpacity, // Opacity logic based on lock and distance
+                opacity: isLocked ? 1 : isDragging ? 0.5 : calculatedOpacity,
                 cursor: isLocked ? 'default' : 'grab',
                 position: 'absolute',
                 left: `${position.x}px`,
                 top: `${position.y}px`,
-                zIndex: isLocked ? 1 : zIndex,
-                border: isLocked && isPuzzleComplete ? 'none' : '1px solid #ccc', // Only show border if not locked or puzzle not complete
+                zIndex: isLocked ? 1 : zIndex, // Locked pieces remain at baseline, unlocked adjust dynamically
+                border: isLocked && isPuzzleComplete ? 'none' : '1px solid #ccc',
             }}
         />
     );

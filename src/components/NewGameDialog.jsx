@@ -11,7 +11,7 @@ const NewGameDialog = ({ onStartGame }) => {
     const availableImages = [
         { src: '/est_forest_vary.png', name: 'Forest' },
         { src: '/muhu.webp', name: 'Beach' },
-        { src: '/cityscape.png', name: 'Cityscape' },
+        { src: '/hill.webp', name: 'Hillside' },
     ];
 
     const handleStartGame = () => {
