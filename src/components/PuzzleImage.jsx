@@ -10,13 +10,21 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
             const gameBoardWidth = window.innerWidth;
             const gameBoardHeight = window.innerHeight;
 
+            // Dynamically calculate header height
+            const headerElement = document.querySelector('.header');
+            const headerHeight = headerElement
+                ? headerElement.getBoundingClientRect().height
+                : 0;
+
+            const gameAreaHeight = gameBoardHeight - headerHeight;
+
             // Define puzzle area as 80% of the GameBoard size
-            const puzzleAreaWidth = gameBoardWidth * 0.7;
-            const puzzleAreaHeight = gameBoardHeight * 0.7;
+            const puzzleAreaWidth = gameBoardWidth * 0.6;
+            const puzzleAreaHeight = gameBoardHeight * 0.6;
 
             // Calculate offset to center the puzzle area within GameBoard
             const offsetX = (gameBoardWidth - puzzleAreaWidth) / 2;
-            const offsetY = (gameBoardHeight - puzzleAreaHeight) / 2;
+            const offsetY = headerHeight + (gameAreaHeight - puzzleAreaHeight) / 2;
 
             const scaleX = puzzleAreaWidth / img.width;
             const scaleY = puzzleAreaHeight / img.height;
@@ -59,12 +67,17 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
                         correctY,
                     });
 
-                    // Generate random initial positions for each piece
+                    // Generate random initial positions within the game area (excluding header)
                     const initialX = Math.random() * (gameBoardWidth - pieceWidth);
-                    const initialY = Math.random() * (gameBoardHeight - pieceHeight);
+                    const initialY =
+                        headerHeight +
+                        Math.random() * (gameAreaHeight - pieceHeight);
+
                     initialPositions.push({ x: initialX, y: initialY });
 
-                    console.log(`Piece [${row}, ${col}] - Correct Position (centered): X=${correctX}, Y=${correctY}`);
+                    console.log(
+                        `Piece [${row}, ${col}] - Correct Position (centered): X=${correctX}, Y=${correctY}`
+                    );
                 }
             }
 
