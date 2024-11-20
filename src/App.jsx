@@ -14,24 +14,43 @@ function App() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [gameId, setGameId] = useState(0); // Unique identifier for each game
 
-    const handleNewGame = ({ rows, columns, image }) => {
+    // Start a new game
+    const handleNewGame = ({ rows, columns, image = '/est_forest_vary.png' }) => {
         setRows(rows);
         setColumns(columns);
-        setGameId((prevGameId) => prevGameId + 1); // Increment the gameId
         setImage(image);
+        setGameId((prevGameId) => prevGameId + 1); // Ensure unique GameBoard re-render
         setIsDialogOpen(false);
+    };
+
+    // Handle AI-generated image
+    const handleGeneratedImage = (generatedImage) => {
+        setImage(generatedImage);
+        setGameId((prevGameId) => prevGameId + 1); // Ensure GameBoard re-renders
     };
 
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="app-container">
-                <Header bgColor={bgColor} onChange={setBgColor} onOpenNewGame={() => setIsDialogOpen(true)}/>
+                <Header
+                    bgColor={bgColor} onChange={setBgColor}
+                    onOpenNewGame={() => setIsDialogOpen(true)}
+                    onImageGenerated={handleGeneratedImage}
+                 setBgColor={setBgColor}/>
                 <main className="game-wrapper">
-                    <GameBoard key={gameId} bgColor={bgColor} rows={rows} columns={columns} image={image}/>
+                    <GameBoard
+                        key={gameId} // Force re-render with unique game ID
+                        bgColor={bgColor}
+                        rows={rows}
+                        columns={columns}
+                        image={image}
+                    />
                 </main>
 
                 {isDialogOpen && (
-                    <NewGameDialog onStartGame={handleNewGame}/>
+                    <NewGameDialog
+                        onStartGame={handleNewGame} // Directly use handleNewGame
+                    />
                 )}
             </div>
         </DndProvider>
