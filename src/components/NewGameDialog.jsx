@@ -4,8 +4,7 @@ import { useState } from 'react';
 import '/src/assets/NewGameDialog.css';
 
 const NewGameDialog = ({ onStartGame }) => {
-    const [rows, setRows] = useState(4);
-    const [columns, setColumns] = useState(4);
+    const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
     const [selectedImage, setSelectedImage] = useState('/est_forest_vary.png');
 
     const availableImages = [
@@ -14,33 +13,41 @@ const NewGameDialog = ({ onStartGame }) => {
         { src: '/hill.webp', name: 'Hillside' },
     ];
 
+    const gridSizes = [
+        { rows: 2, columns: 2 },
+        { rows: 3, columns: 3 },
+        { rows: 4, columns: 4 },
+        { rows: 5, columns: 5 },
+        { rows: 6, columns: 6 },
+        { rows: 7, columns: 7 },
+        { rows: 8, columns: 8 },
+        { rows: 9, columns: 9 },
+        { rows: 10, columns: 10 },
+    ];
+
+    const handleSizeClick = (size) => {
+        setSelectedSize(size);
+    };
+
     const handleStartGame = () => {
-        onStartGame({ rows, columns, image: selectedImage });
+        onStartGame({ rows: selectedSize.rows, columns: selectedSize.columns, image: selectedImage });
     };
 
     return (
         <div className="new-game-dialog">
             <h3>New Game Settings</h3>
-            <label>
-                Rows:
-                <input
-                    type="number"
-                    min="2"
-                    max="10"
-                    value={rows}
-                    onChange={(e) => setRows(Number(e.target.value))}
-                />
-            </label>
-            <label>
-                Columns:
-                <input
-                    type="number"
-                    min="2"
-                    max="10"
-                    value={columns}
-                    onChange={(e) => setColumns(Number(e.target.value))}
-                />
-            </label>
+            <div className="grid-size-buttons">
+                <p>Select Grid Size:</p>
+                {gridSizes.map((size) => (
+                    <button
+                        key={`${size.rows}x${size.columns}`}
+                        onClick={() => handleSizeClick(size)}
+                        className={selectedSize.rows === size.rows && selectedSize.columns === size.columns ? 'selected' : ''}
+                    >
+                        {size.rows}x{size.columns}
+                    </button>
+                ))}
+            </div>
             <label>
                 Select Image:
                 <select
