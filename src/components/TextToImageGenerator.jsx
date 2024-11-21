@@ -29,13 +29,15 @@ const TextToImageGenerator = ({ onImageGenerated }) => {
                 }
             );
 
+            console.log("Headers:", response.headers); // Log headers to check rate limits
+
             const imageBlob = new Blob([response.data], { type: "image/png" });
             const imageUrl = URL.createObjectURL(imageBlob);
 
             onImageGenerated(imageUrl); // Send image URL to parent
             setIsLoading(false);
         } catch (error) {
-            console.error("Error generating image:", error);
+            console.error("Error generating image:", error.response?.headers); // Log error headers
             setIsLoading(false);
         }
     };

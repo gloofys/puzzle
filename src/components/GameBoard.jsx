@@ -107,8 +107,6 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
         </div>
     );
 };
-// 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
 export default GameBoard;
 
 
-//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
