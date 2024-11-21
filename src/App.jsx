@@ -24,9 +24,11 @@ function App() {
     };
 
     // Handle AI-generated image
-    const handleGeneratedImage = (generatedImage) => {
+    const handleGeneratedImage = (generatedImage, grid) => {
         setImage(generatedImage);
-        setGameId((prevGameId) => prevGameId + 1); // Ensure GameBoard re-renders
+        setRows(grid.rows);
+        setColumns(grid.columns);
+        setGameId((prevGameId) => prevGameId + 1); // Restart the game with new image and grid
     };
 
     return (
@@ -36,6 +38,10 @@ function App() {
                     bgColor={bgColor} onChange={setBgColor}
                     onOpenNewGame={() => setIsDialogOpen(true)}
                     onImageGenerated={handleGeneratedImage}
+                    onGridSelected={(grid) => {
+                        setRows(grid.rows);
+                        setColumns(grid.columns);
+                    }}
                  setBgColor={setBgColor}/>
                 <main className="game-wrapper">
                     <GameBoard

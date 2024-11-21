@@ -4,11 +4,10 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
 
-
-
-const TextToImageGenerator = ({ onImageGenerated }) => {
+const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedGrid, setSelectedGrid] = useState({ rows: 4, columns: 4 });
 
     const handleGenerateImage = async () => {
         setIsLoading(true);
@@ -34,12 +33,17 @@ const TextToImageGenerator = ({ onImageGenerated }) => {
             const imageBlob = new Blob([response.data], { type: "image/png" });
             const imageUrl = URL.createObjectURL(imageBlob);
 
-            onImageGenerated(imageUrl); // Send image URL to parent
+            onImageGenerated(imageUrl); // Send the image URL to the parent
+            onGridSelected(selectedGrid); // Send grid selection to the parent
             setIsLoading(false);
         } catch (error) {
             console.error("Error generating image:", error.response?.headers); // Log error headers
             setIsLoading(false);
         }
+    };
+
+    const handleGridClick = (rows, columns) => {
+        setSelectedGrid({ rows, columns });
     };
 
     return (
@@ -51,7 +55,24 @@ const TextToImageGenerator = ({ onImageGenerated }) => {
                 placeholder="Describe your image..."
                 rows="3"
             />
-            <button onClick={handleGenerateImage} disabled={isLoading}>
+            <div className="grid-selection">
+                <p>Select Grid Size:</p>
+                {[...Array(9).keys()].map((i) => {
+                    const size = i + 2; // From 2x2 to 10x10
+                    return (
+                        <button
+                            key={size}
+                            onClick={() => handleGridClick(size, size)}
+                            className={
+                                selectedGrid.rows === size ? "selected" : ""
+                            }
+                        >
+                            {size}x{size}
+                        </button>
+                    );
+                })}
+            </div>
+            <button onClick={handleGenerateImage} disabled={isLoading || !prompt}>
                 {isLoading ? "Generating..." : "Generate Image"}
             </button>
         </div>
@@ -60,6 +81,7 @@ const TextToImageGenerator = ({ onImageGenerated }) => {
 
 TextToImageGenerator.propTypes = {
     onImageGenerated: PropTypes.func.isRequired,
+    onGridSelected: PropTypes.func.isRequired,
 };
 
 export default TextToImageGenerator;

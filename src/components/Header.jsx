@@ -4,7 +4,7 @@ import '/src/assets/Header.css';
 import {useState} from "react";
 import TextToImageGenerator from "./TextToImageGenerator.jsx";
 
-const Header = ({ bgColor, setBgColor, onOpenNewGame, onImageGenerated }) => {
+const Header = ({ bgColor, setBgColor, onOpenNewGame, onImageGenerated, onGridSelected}) => {
     const [isImageGeneratorOpen, setImageGeneratorOpen] = useState(false);
     return (
         <header className="header">
@@ -15,7 +15,7 @@ const Header = ({ bgColor, setBgColor, onOpenNewGame, onImageGenerated }) => {
                 {isImageGeneratorOpen ? "Close AI Generator" : "Generate AI Image"}
             </button>
             {isImageGeneratorOpen && (
-                <TextToImageGenerator onImageGenerated={onImageGenerated} />
+                <TextToImageGenerator onImageGenerated={onImageGenerated}  onGridSelected={onGridSelected}/>
             )}
         </header>
     );
@@ -26,6 +26,7 @@ Header.propTypes = {
     setBgColor: PropTypes.func.isRequired, // Update prop to `setBgColor`
     onOpenNewGame: PropTypes.func.isRequired,
     onImageGenerated: PropTypes.func.isRequired,
+    onGridSelected: PropTypes.func.isRequired, // Add this as a required prop
 };
 
 export default Header;
