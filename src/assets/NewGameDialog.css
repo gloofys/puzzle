@@ -8,6 +8,7 @@
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+    border-radius: 5px;
 }
 
 .new-game-dialog h3 {
@@ -39,21 +40,4 @@
 .overlay-hidden {
     display: none;
 }
-.grid-size-buttons {
-    margin-bottom: 1rem;
-}
 
-.grid-size-buttons button {
-    margin: 0.2rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.grid-size-buttons button.selected {
-    background-color: #4caf50;
-    color: white;
-    font-weight: bold;
-}

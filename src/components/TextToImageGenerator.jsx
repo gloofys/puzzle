@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
+import"/src/assets/Buttons.css"
 
 const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
     const [prompt, setPrompt] = useState("");
@@ -55,7 +56,7 @@ const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
                 placeholder="Describe your image..."
                 rows="3"
             />
-            <div className="grid-selection">
+            <div className="grid-size-buttons">
                 <p>Select Grid Size:</p>
                 {[...Array(9).keys()].map((i) => {
                     const size = i + 2; // From 2x2 to 10x10
