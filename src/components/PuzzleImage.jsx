@@ -75,9 +75,6 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
 
                     initialPositions.push({ x: initialX, y: initialY });
 
-                    console.log(
-                        `Piece [${row}, ${col}] - Correct Position (centered): X=${correctX}, Y=${correctY}`
-                    );
                 }
             }
 
@@ -86,7 +83,6 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
         };
 
         img.onerror = () => {
-            console.error('Failed to load image:', image);
         };
     }, [setPieces, setInitialPositions, rows, columns, image]);
 

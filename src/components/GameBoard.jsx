@@ -87,7 +87,6 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
 
 
     useEffect(() => {
-        console.log('Positions state in GameBoard:', positions);
     }, [positions]);
 
     return (

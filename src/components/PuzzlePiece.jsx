@@ -13,7 +13,6 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex
     }));
 
     useEffect(() => {
-        console.log(`PuzzlePiece ${index} received updated position:`, position);
     }, [index, position]);
 
     // Calculate distance between the current position and the correct position for opacity
