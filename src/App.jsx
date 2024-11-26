@@ -24,10 +24,10 @@ function App() {
     };
 
     // Handle AI-generated image
-    const handleGeneratedImage = (generatedImage, grid) => {
+    const handleGeneratedImage = (generatedImage, gridsize) => {
         setImage(generatedImage);
-        setRows(grid.rows);
-        setColumns(grid.columns);
+        setRows(gridsize.rows);
+        setColumns(gridsize.columns);
         setGameId((prevGameId) => prevGameId + 1); // Restart the game with new image and grid
     };
 
@@ -56,6 +56,7 @@ function App() {
                 {isDialogOpen && (
                     <NewGameDialog
                         onStartGame={handleNewGame} // Directly use handleNewGame
+                        onClose={() => setIsDialogOpen(false)} // Close dialog when "X" is clicked
                     />
                 )}
             </div>

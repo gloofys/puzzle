@@ -17,3 +17,19 @@
     font-weight: bold;
 }
 
+.new-game-dialog .close-button {
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    cursor: pointer; /* Keep the pointer cursor */
+    font-size: 1.5rem; /* Make the cross larger */
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    color: #333; /* Set a suitable color */
+    position: absolute; /* Position it */
+    top: 10px; /* Adjust positioning */
+    right: 10px;
+}
+
+.new-game-dialog .close-button:hover {
+    color: #ff0000; /* Optional: Change color on hover */
+}

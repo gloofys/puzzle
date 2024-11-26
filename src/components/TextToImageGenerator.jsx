@@ -3,15 +3,29 @@ import React, { useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
-import"/src/assets/Buttons.css"
+import "/src/assets/Buttons.css";
 
 const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedGrid, setSelectedGrid] = useState({ rows: 4, columns: 4 });
+    const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
+    const [error, setError] = useState("");
+
+    const gridSizes = [
+        { rows: 2, columns: 2 },
+        { rows: 3, columns: 3 },
+        { rows: 4, columns: 4 },
+        { rows: 5, columns: 5 },
+        { rows: 6, columns: 6 },
+        { rows: 7, columns: 7 },
+        { rows: 8, columns: 8 },
+        { rows: 9, columns: 9 },
+        { rows: 10, columns: 10 },
+    ];
 
     const handleGenerateImage = async () => {
         setIsLoading(true);
+        setError("");
         const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
         const API_KEY = import.meta.env.VITE_HUGGING_FACE_API_KEY;
 
@@ -25,26 +39,26 @@ const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
                         Accept: "application/json",
                         "Content-Type": "application/json",
                     },
-                    responseType: "arraybuffer", // Binary data
+                    responseType: "arraybuffer",
                 }
             );
-
-            console.log("Headers:", response.headers); // Log headers to check rate limits
 
             const imageBlob = new Blob([response.data], { type: "image/png" });
             const imageUrl = URL.createObjectURL(imageBlob);
 
-            onImageGenerated(imageUrl); // Send the image URL to the parent
-            onGridSelected(selectedGrid); // Send grid selection to the parent
+            onImageGenerated(imageUrl);
+            onGridSelected(selectedSize);
+
             setIsLoading(false);
+            // eslint-disable-next-line no-unused-vars
         } catch (error) {
-            console.error("Error generating image:", error.response?.headers); // Log error headers
+            setError("Failed to generate image. Please try again later.");
             setIsLoading(false);
         }
     };
 
-    const handleGridClick = (rows, columns) => {
-        setSelectedGrid({ rows, columns });
+    const handleSizeClick = (size) => {
+        setSelectedSize(size);
     };
 
     return (
@@ -58,22 +72,22 @@ const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
             />
             <div className="grid-size-buttons">
                 <p>Select Grid Size:</p>
-                {[...Array(9).keys()].map((i) => {
-                    const size = i + 2; // From 2x2 to 10x10
-                    return (
-                        <button
-                            key={size}
-                            onClick={() => handleGridClick(size, size)}
-                            className={
-                                selectedGrid.rows === size ? "selected" : ""
-                            }
-                        >
-                            {size}x{size}
-                        </button>
-                    );
-                })}
+                {gridSizes.map((size) => (
+                    <button
+                        key={`${size.rows}x${size.columns}`}
+                        onClick={() => handleSizeClick(size)}
+                        className={
+                            selectedSize.rows === size.rows && selectedSize.columns === size.columns
+                                ? "selected"
+                                : ""
+                        }
+                    >
+                        {size.rows}x{size.columns}
+                    </button>
+                ))}
             </div>
-            <button onClick={handleGenerateImage} disabled={isLoading || !prompt}>
+            {error && <p className="error-message">{error}</p>}
+            <button onClick={handleGenerateImage} disabled={isLoading || !prompt.trim()}>
                 {isLoading ? "Generating..." : "Generate Image"}
             </button>
         </div>

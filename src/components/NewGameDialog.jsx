@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import '/src/assets/NewGameDialog.css';
 
-const NewGameDialog = ({ onStartGame }) => {
+const NewGameDialog = ({ onStartGame, onClose }) => {
     const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
     const [selectedImage, setSelectedImage] = useState('/est_forest_vary.png');
 
@@ -35,6 +35,10 @@ const NewGameDialog = ({ onStartGame }) => {
 
     return (
         <div className="new-game-dialog">
+            {/* Close Button */}
+            <button className="close-button" onClick={onClose}>
+                close
+            </button>
             <h3>New Game Settings</h3>
             <div className="grid-size-buttons">
                 <p>Select Grid Size:</p>
@@ -68,6 +72,7 @@ const NewGameDialog = ({ onStartGame }) => {
 
 NewGameDialog.propTypes = {
     onStartGame: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired, // Add the onClose prop
 };
 
 export default NewGameDialog;
