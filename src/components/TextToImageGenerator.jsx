@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
 import "/src/assets/Buttons.css";
 
-const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
+const TextToImageGenerator = ({ onImageGenerated}) => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
@@ -46,9 +46,8 @@ const TextToImageGenerator = ({ onImageGenerated, onGridSelected }) => {
             const imageBlob = new Blob([response.data], { type: "image/png" });
             const imageUrl = URL.createObjectURL(imageBlob);
 
-            onImageGenerated(imageUrl);
-            onGridSelected(selectedSize);
-
+            onImageGenerated(imageUrl, selectedSize); // Pass selectedSize here
+            setError(""); // Reset error on success
             setIsLoading(false);
             // eslint-disable-next-line no-unused-vars
         } catch (error) {
