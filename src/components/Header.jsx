@@ -15,7 +15,7 @@ const Header = ({ bgColor, setBgColor, onOpenNewGame, onImageGenerated, onGridSe
                 {isImageGeneratorOpen ? "Close AI Generator" : "Generate AI Image"}
             </button>
             {isImageGeneratorOpen && (
-                <TextToImageGenerator onImageGenerated={onImageGenerated}  onGridSelected={onGridSelected}/>
+                <TextToImageGenerator onImageGenerated={onImageGenerated}  onGridSelected={onGridSelected}  onClose={() => setImageGeneratorOpen(false)}/>
             )}
         </header>
     );

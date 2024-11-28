@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
 import "/src/assets/Buttons.css";
 
-const TextToImageGenerator = ({ onImageGenerated}) => {
+const TextToImageGenerator = ({ onImageGenerated, onClose}) => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
@@ -62,6 +62,11 @@ const TextToImageGenerator = ({ onImageGenerated}) => {
 
     return (
         <div className="text-to-image-generator">
+            {/* Close Button */}
+            <button className="close-button" onClick={onClose}>
+                close
+            </button>
+
             <h3>Generate Puzzle Image</h3>
             <textarea
                 value={prompt}
@@ -96,6 +101,7 @@ const TextToImageGenerator = ({ onImageGenerated}) => {
 TextToImageGenerator.propTypes = {
     onImageGenerated: PropTypes.func.isRequired,
     onGridSelected: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default TextToImageGenerator;
