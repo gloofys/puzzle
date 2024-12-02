@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
 import "/src/assets/Buttons.css";
 
-const TextToImageGenerator = ({ onImageGenerated, onClose}) => {
+const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
@@ -46,8 +46,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose}) => {
             const imageBlob = new Blob([response.data], { type: "image/png" });
             const imageUrl = URL.createObjectURL(imageBlob);
 
-            onImageGenerated(imageUrl, selectedSize); // Pass selectedSize here
-            setError(""); // Reset error on success
+            onImageGenerated(imageUrl, selectedSize);
             setIsLoading(false);
             // eslint-disable-next-line no-unused-vars
         } catch (error) {
@@ -56,17 +55,11 @@ const TextToImageGenerator = ({ onImageGenerated, onClose}) => {
         }
     };
 
-    const handleSizeClick = (size) => {
-        setSelectedSize(size);
-    };
-
     return (
         <div className="text-to-image-generator">
-            {/* Close Button */}
             <button className="close-button" onClick={onClose}>
-                close
+                &times;
             </button>
-
             <h3>Generate Puzzle Image</h3>
             <textarea
                 value={prompt}
@@ -79,7 +72,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose}) => {
                 {gridSizes.map((size) => (
                     <button
                         key={`${size.rows}x${size.columns}`}
-                        onClick={() => handleSizeClick(size)}
+                        onClick={() => setSelectedSize(size)}
                         className={
                             selectedSize.rows === size.rows && selectedSize.columns === size.columns
                                 ? "selected"
@@ -100,7 +93,6 @@ const TextToImageGenerator = ({ onImageGenerated, onClose}) => {
 
 TextToImageGenerator.propTypes = {
     onImageGenerated: PropTypes.func.isRequired,
-    onGridSelected: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 

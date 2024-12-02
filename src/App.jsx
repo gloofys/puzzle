@@ -4,6 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import GameBoard from './components/GameBoard';
 import Header from './components/Header';
 import NewGameDialog from './components/NewGameDialog';
+import TextToImageGenerator from './components/TextToImageGenerator';
 import { useState } from 'react';
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
     const [rows, setRows] = useState(4);
     const [columns, setColumns] = useState(4);
     const [image, setImage] = useState('/est_forest_vary.png'); // Default image
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isNewGameDialogOpen, setIsNewGameDialogOpen] = useState(false);
+    const [isImageGeneratorOpen, setIsImageGeneratorOpen] = useState(false);
     const [gameId, setGameId] = useState(0); // Unique identifier for each game
 
     // Start a new game
@@ -20,29 +22,34 @@ function App() {
         setColumns(columns);
         setImage(image);
         setGameId((prevGameId) => prevGameId + 1); // Ensure unique GameBoard re-render
-        setIsDialogOpen(false);
+        setIsNewGameDialogOpen(false);
     };
 
     // Handle AI-generated image
-    const handleGeneratedImage = (generatedImage, gridsize) => {
+    const handleGeneratedImage = (generatedImage, gridSize) => {
         setImage(generatedImage);
-        setRows(gridsize.rows);
-        setColumns(gridsize.columns);
+        setRows(gridSize.rows);
+        setColumns(gridSize.columns);
         setGameId((prevGameId) => prevGameId + 1); // Restart the game with new image and grid
+        setIsImageGeneratorOpen(false);
     };
 
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="app-container">
                 <Header
-                    bgColor={bgColor} onChange={setBgColor}
-                    onOpenNewGame={() => setIsDialogOpen(true)}
-                    onImageGenerated={handleGeneratedImage}
-                    onGridSelected={(grid) => {
-                        setRows(grid.rows);
-                        setColumns(grid.columns);
+                    bgColor={bgColor}
+                    setBgColor={setBgColor}
+                    onOpenNewGame={() => {
+                        setIsNewGameDialogOpen(true);
+                        setIsImageGeneratorOpen(false); // Ensure the AI generator is closed
                     }}
-                 setBgColor={setBgColor}/>
+                    onOpenImageGenerator={() => {
+                        setIsNewGameDialogOpen(false); // Ensure the New Game dialog is closed
+                        setIsImageGeneratorOpen(true);
+                    }}
+                    onImageGenerated={handleGeneratedImage}
+                />
                 <main className="game-wrapper">
                     <GameBoard
                         key={gameId} // Force re-render with unique game ID
@@ -53,10 +60,17 @@ function App() {
                     />
                 </main>
 
-                {isDialogOpen && (
+                {isNewGameDialogOpen && (
                     <NewGameDialog
-                        onStartGame={handleNewGame} // Directly use handleNewGame
-                        onClose={() => setIsDialogOpen(false)} // Close dialog when "X" is clicked
+                        onStartGame={handleNewGame}
+                        onClose={() => setIsNewGameDialogOpen(false)} // Close dialog when "X" is clicked
+                    />
+                )}
+
+                {isImageGeneratorOpen && (
+                    <TextToImageGenerator
+                        onImageGenerated={handleGeneratedImage}
+                        onClose={() => setIsImageGeneratorOpen(false)} // Close Image Generator
                     />
                 )}
             </div>

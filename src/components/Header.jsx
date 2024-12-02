@@ -1,32 +1,24 @@
 import PropTypes from 'prop-types';
 import BackgroundColorSelector from './BackgroundColorSelector';
 import '/src/assets/Header.css';
-import {useState} from "react";
-import TextToImageGenerator from "./TextToImageGenerator.jsx";
 
-const Header = ({ bgColor, setBgColor, onOpenNewGame, onImageGenerated, onGridSelected}) => {
-    const [isImageGeneratorOpen, setImageGeneratorOpen] = useState(false);
+const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator}) => {
     return (
         <header className="header">
             <h1>Opacity Puzzle</h1>
-            <BackgroundColorSelector bgColor={bgColor} onChange={setBgColor}/>
+            <BackgroundColorSelector bgColor={bgColor} onChange={setBgColor} />
             <button onClick={onOpenNewGame}>New Game</button>
-            <button onClick={() => setImageGeneratorOpen((prev) => !prev)}>
-                {isImageGeneratorOpen ? "Close AI Generator" : "Generate AI Image"}
-            </button>
-            {isImageGeneratorOpen && (
-                <TextToImageGenerator onImageGenerated={onImageGenerated}  onGridSelected={onGridSelected}  onClose={() => setImageGeneratorOpen(false)}/>
-            )}
+            <button onClick={onOpenImageGenerator}>Generate AI Image</button>
         </header>
     );
 };
 
 Header.propTypes = {
     bgColor: PropTypes.string.isRequired,
-    setBgColor: PropTypes.func.isRequired, // Update prop to `setBgColor`
+    setBgColor: PropTypes.func.isRequired,
     onOpenNewGame: PropTypes.func.isRequired,
+    onOpenImageGenerator: PropTypes.func.isRequired,
     onImageGenerated: PropTypes.func.isRequired,
-    onGridSelected: PropTypes.func.isRequired, // Add this as a required prop
 };
 
 export default Header;
