@@ -58,7 +58,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     return (
         <div className="text-to-image-generator">
             <button className="close-button" onClick={onClose}>
-                &times;
+                close
             </button>
             <h3>Generate Puzzle Image</h3>
             <textarea

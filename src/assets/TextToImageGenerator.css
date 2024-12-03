@@ -30,17 +30,4 @@
     color: red;
     font-size: 0.9em;
 }
-.text-to-image-generator .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #333;
-}
 
-.text-to-image-generator .close-button:hover {
-    color: #000;
-}
