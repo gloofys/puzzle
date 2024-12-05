@@ -13,7 +13,13 @@ const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator }) =>
             <BackgroundColorSelector bgColor={bgColor} onChange={setBgColor} />
             <button onClick={onOpenNewGame}>New Game</button>
             <button onClick={onOpenImageGenerator}>Generate AI Image</button>
-            <button onClick={() => setIsInfoDialogOpen(true)}>Info</button>
+            <button
+                className="info-icon-button"
+                onClick={() => setIsInfoDialogOpen(true)}
+                aria-label="Game Instructions"
+            >
+                <i className="fas fa-info-circle"></i>
+            </button>
 
             {/* Show the InfoDialog when isInfoDialogOpen is true */}
             {isInfoDialogOpen && <InfoDialog onClose={() => setIsInfoDialogOpen(false)} />}
