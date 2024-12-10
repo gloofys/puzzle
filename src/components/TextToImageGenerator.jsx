@@ -48,7 +48,6 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
 
             onImageGenerated(imageUrl, selectedSize);
             setIsLoading(false);
-            // eslint-disable-next-line no-unused-vars
         } catch (error) {
             setError("Failed to generate image. Please try again later.");
             setIsLoading(false);
@@ -56,37 +55,44 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     };
 
     return (
-        <div className="text-to-image-generator">
-            <button className="close-button" onClick={onClose}>
-                close
-            </button>
-            <h3>Generate Puzzle Image</h3>
-            <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Describe your image..."
-                rows="3"
-            />
-            <div className="grid-size-buttons">
-                <p>Select Grid Size:</p>
-                {gridSizes.map((size) => (
-                    <button
-                        key={`${size.rows}x${size.columns}`}
-                        onClick={() => setSelectedSize(size)}
-                        className={
-                            selectedSize.rows === size.rows && selectedSize.columns === size.columns
-                                ? "selected"
-                                : ""
-                        }
-                    >
-                        {size.rows}x{size.columns}
-                    </button>
-                ))}
+        <div className="text-to-image-generator-container">
+            <div className="dialog-overlay" onClick={onClose}></div>
+            <div className="text-to-image-generator">
+                <button className="close-button" onClick={onClose}>
+                    &times;
+                </button>
+                <h3>Generate Puzzle Image</h3>
+                <textarea
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    placeholder="Describe your image..."
+                    rows="3"
+                />
+                <div className="grid-size-buttons">
+                    <p>Select Grid Size:</p>
+                    {gridSizes.map((size) => (
+                        <button
+                            key={`${size.rows}x${size.columns}`}
+                            onClick={() => setSelectedSize(size)}
+                            className={
+                                selectedSize.rows === size.rows && selectedSize.columns === size.columns
+                                    ? "selected"
+                                    : ""
+                            }
+                        >
+                            {size.rows}x{size.columns}
+                        </button>
+                    ))}
+                </div>
+                {error && <p className="error-message">{error}</p>}
+                <button
+                    className="generate-button"
+                    onClick={handleGenerateImage}
+                    disabled={isLoading || !prompt.trim()}
+                >
+                    {isLoading ? "Generating..." : "Generate Image"}
+                </button>
             </div>
-            {error && <p className="error-message">{error}</p>}
-            <button onClick={handleGenerateImage} disabled={isLoading || !prompt.trim()}>
-                {isLoading ? "Generating..." : "Generate Image"}
-            </button>
         </div>
     );
 };
