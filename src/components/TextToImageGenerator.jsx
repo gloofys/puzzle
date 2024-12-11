@@ -48,6 +48,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
 
             onImageGenerated(imageUrl, selectedSize);
             setIsLoading(false);
+            // eslint-disable-next-line no-unused-vars
         } catch (error) {
             setError("Failed to generate image. Please try again later.");
             setIsLoading(false);

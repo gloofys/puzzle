@@ -23,15 +23,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     width: 90%;
-    max-width: 400px;
+    max-width: 40rem;
     z-index: 1001;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: #1a1a1a;
 }
-
+.dialog-content p{
+    padding: 2rem 0 0 0;
+}
 .close-button {
     position: absolute;
     top: 10px;
