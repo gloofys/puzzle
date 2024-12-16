@@ -1,7 +1,59 @@
-.header{
+.header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
 }
+
+.header-section {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.color-selector {
+    flex: 1;
+    justify-content: center;
+}
+
+.buttons {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+button {
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #e0e0e0;
+}
+
+.info-icon-button {
+    width: 40px; /* Set a fixed width */
+    height: 40px; /* Set a fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.info-icon-button i {
+    font-size: 1rem; /* Match other buttons' text size */
+}
+
 .text-to-image-generator {
     position: absolute;
     top: 100%;

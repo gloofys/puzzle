@@ -9,20 +9,27 @@ const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator }) =>
 
     return (
         <header className="header">
-            <h1>Opacity Puzzle</h1>
-            <BackgroundColorSelector bgColor={bgColor} onChange={setBgColor} />
-            <button onClick={onOpenNewGame}>New Game</button>
-            <button onClick={onOpenImageGenerator}>Generate AI Image</button>
-            <button
-                className="info-icon-button"
-                onClick={() => setIsInfoDialogOpen(true)}
-                aria-label="Game Instructions"
-            >
-                <i className="fas fa-info-circle"></i>
-            </button>
+            <div className="header-section title">
+                <h1>Opacity Puzzle</h1>
+            </div>
 
-            {/* Show the InfoDialog when isInfoDialogOpen is true */}
-            {isInfoDialogOpen && <InfoDialog onClose={() => setIsInfoDialogOpen(false)} />}
+            <div className="header-section color-selector">
+                <BackgroundColorSelector bgColor={bgColor} onChange={setBgColor}/>
+            </div>
+
+            <div className="header-section buttons">
+                <button onClick={onOpenNewGame}>New Game</button>
+                <button onClick={onOpenImageGenerator}>Generate AI Image</button>
+                <button
+                    className="info-icon-button"
+                    onClick={() => setIsInfoDialogOpen(true)}
+                    aria-label="Game Instructions"
+                >
+                    <i className="fas fa-info-circle"></i>
+                </button>
+            </div>
+
+            {isInfoDialogOpen && <InfoDialog onClose={() => setIsInfoDialogOpen(false)}/>}
         </header>
     );
 };
