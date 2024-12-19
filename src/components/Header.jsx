@@ -5,7 +5,8 @@ import { useState } from 'react';
 import '/src/assets/Header.css';
 
 const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator }) => {
-    const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false); // State for managing the Info dialog
+    // Set the initial state to true
+    const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(true);
 
     return (
         <header className="header">
