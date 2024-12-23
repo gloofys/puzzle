@@ -31,7 +31,7 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
     }, [pieces]);
 
     useEffect(() => {
-        if (lockedPositions.length === pieces.length) {
+        if (lockedPositions.length > 0 && lockedPositions.length === pieces.length) {
             setIsPuzzleComplete(true);
         }
     }, [lockedPositions, pieces]);
