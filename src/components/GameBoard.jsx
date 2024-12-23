@@ -3,6 +3,7 @@ import { useDrop } from 'react-dnd';
 import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
 import PuzzleImage from './PuzzleImage.jsx';
+import successSound from '/src/assets/sounds/success.mp3';
 
 const SNAP_TOLERANCE = 70;
 
@@ -35,6 +36,13 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
         }
     }, [lockedPositions, pieces]);
 
+    const successAudio = useRef(new Audio(successSound));
+
+    const playSuccessSound = () => {
+        successAudio.current.currentTime = 0; // Reset audio to the start
+        successAudio.current.play();
+    };
+
     const [, drop] = useDrop(() => ({
         accept: 'puzzle-piece',
         drop: (item, monitor) => {
@@ -54,6 +62,9 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
                             y: correctPosition.correctY,
                         };
                         setLockedPositions((prevLocked) => [...prevLocked, item.index]);
+
+                        // Play success sound
+                        playSuccessSound();
                     } else {
                         // Update to the dropped position
                         updatedPositions[item.index] = { x: offset.x, y: offset.y };
@@ -86,8 +97,6 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
     }));
 
 
-    useEffect(() => {
-    }, [positions]);
 
     return (
         <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor }}>
