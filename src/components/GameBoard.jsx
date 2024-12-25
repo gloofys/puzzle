@@ -4,11 +4,12 @@ import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
 import PuzzleImage from './PuzzleImage.jsx';
 import successSound from '/src/assets/sounds/success.mp3';
+import completedSound from '/src/assets/sounds/completed.mp3';
 
 const SNAP_TOLERANCE = 70;
 
 // eslint-disable-next-line react/prop-types
-const GameBoard = ({ bgColor, rows, columns,  image }) => {
+const GameBoard = ({ bgColor, rows, columns, image }) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
@@ -17,7 +18,21 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
 
-    // Reset the puzzle state when rows and columns change (new game)
+    const successAudio = useRef(new Audio(successSound));
+    const completionAudio = useRef(new Audio(completedSound)); // Completion sound reference
+
+    const playSuccessSound = () => {
+        successAudio.current.currentTime = 0; // Reset to start
+        successAudio.current.play();
+    };
+
+    useEffect(() => {
+        if (isPuzzleComplete) {
+            completionAudio.current.currentTime = 0; // Reset to start
+            completionAudio.current.play(); // Play completion sound
+        }
+    }, [isPuzzleComplete]);
+
     useEffect(() => {
         setPositions([]);
         setLockedPositions([]);
@@ -35,13 +50,6 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
             setIsPuzzleComplete(true);
         }
     }, [lockedPositions, pieces]);
-
-    const successAudio = useRef(new Audio(successSound));
-
-    const playSuccessSound = () => {
-        successAudio.current.currentTime = 0; // Reset audio to the start
-        successAudio.current.play();
-    };
 
     const [, drop] = useDrop(() => ({
         accept: 'puzzle-piece',
@@ -96,8 +104,6 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
         },
     }));
 
-
-
     return (
         <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor }}>
             <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} rows={rows} columns={columns} image={image} />
@@ -116,5 +122,3 @@ const GameBoard = ({ bgColor, rows, columns,  image }) => {
     );
 };
 export default GameBoard;
-
-
