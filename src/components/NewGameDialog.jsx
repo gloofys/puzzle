@@ -65,7 +65,7 @@ const NewGameDialog = ({ onStartGame, onClose }) => {
                         ))}
                     </select>
                 </label>
-                <button onClick={handleStartGame}>Start Game</button>
+                <button className="start-game-button" onClick={handleStartGame}>Start Game</button>
             </div>
         </div>
     );
