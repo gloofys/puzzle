@@ -74,7 +74,6 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
                         Math.random() * (gameAreaHeight - pieceHeight);
 
                     initialPositions.push({ x: initialX, y: initialY });
-
                 }
             }
 

@@ -19,27 +19,26 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
     const [zIndexCounter, setZIndexCounter] = useState(100);
 
     const successAudio = useRef(new Audio(successSound));
-    const completionAudio = useRef(new Audio(completedSound)); // Completion sound reference
+    const completionAudio = useRef(new Audio(completedSound));
 
     const playSuccessSound = () => {
-        successAudio.current.currentTime = 0; // Reset to start
+        successAudio.current.currentTime = 0;
         successAudio.current.play();
     };
 
-    useEffect(() => {
-        if (isPuzzleComplete) {
-            completionAudio.current.currentTime = 0; // Reset to start
-            completionAudio.current.play(); // Play completion sound
-        }
-    }, [isPuzzleComplete]);
+    const playCompletionSound = () => {
+        completionAudio.current.currentTime = 0;
+        completionAudio.current.play();
+    };
 
     useEffect(() => {
         setPositions([]);
         setLockedPositions([]);
-        setIsPuzzleComplete(false);
         setZIndexes({});
         setZIndexCounter(100);
+        // Do not reset pieces here, as PuzzleImage will set them
     }, [rows, columns]);
+
 
     useEffect(() => {
         piecesRef.current = pieces;
@@ -69,10 +68,19 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
                             x: correctPosition.correctX,
                             y: correctPosition.correctY,
                         };
-                        setLockedPositions((prevLocked) => [...prevLocked, item.index]);
+                        setLockedPositions((prevLocked) => {
+                            const newLocked = [...prevLocked, item.index];
 
-                        // Play success sound
-                        playSuccessSound();
+                            // Check if this is the last piece
+                            console.log('Locked positions:', newLocked.length, 'Total pieces:', piecesRef.current.length);
+                            if (newLocked.length === piecesRef.current.length) {
+                                playCompletionSound(); // Play completion sound for the last piece
+                            } else {
+                                playSuccessSound(); // Play success sound for other pieces
+                            }
+
+                            return newLocked;
+                        });
                     } else {
                         // Update to the dropped position
                         updatedPositions[item.index] = { x: offset.x, y: offset.y };
@@ -88,7 +96,7 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
                     // Ensure all pieces have a baseline z-index
                     piecesRef.current.forEach((_, idx) => {
                         if (!newZIndexes[idx]) {
-                            newZIndexes[idx] = zIndexCounter + idx; // Incrementally assign for untouched pieces
+                            newZIndexes[idx] = zIndexCounter + idx;
                         }
                     });
 
