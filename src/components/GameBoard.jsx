@@ -18,17 +18,36 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
 
-    const successAudio = useRef(new Audio(successSound));
-    const completionAudio = useRef(new Audio(completedSound));
+    // Initialize audio objects with useRef (persist across renders)
+    const successAudioRef = useRef(null);
+    const completionAudioRef = useRef(null);
+
+    // Set up audio objects once when the component mounts
+    useEffect(() => {
+        successAudioRef.current = new Audio(successSound);
+        completionAudioRef.current = new Audio(completedSound);
+
+        return () => {
+            // Clean up audio resources when the component unmounts
+            successAudioRef.current = null;
+            completionAudioRef.current = null;
+        };
+    }, []);
 
     const playSuccessSound = () => {
-        successAudio.current.currentTime = 0;
-        successAudio.current.play();
+        const audio = successAudioRef.current;
+        if (audio) {
+            audio.currentTime = 0; // Reset to the start
+            audio.play();
+        }
     };
 
     const playCompletionSound = () => {
-        completionAudio.current.currentTime = 0;
-        completionAudio.current.play();
+        const audio = completionAudioRef.current;
+        if (audio) {
+            audio.currentTime = 0; // Reset to the start
+            audio.play();
+        }
     };
 
     useEffect(() => {
