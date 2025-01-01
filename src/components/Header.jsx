@@ -4,7 +4,7 @@ import InfoDialog from './InfoDialog'; // Import the InfoDialog component
 import { useState } from 'react';
 import '/src/assets/Header.css';
 
-const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator }) => {
+const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator, onToggleMute, isMuted }) => {
     // Set the initial state to true
     const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(true);
 
@@ -28,6 +28,9 @@ const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator }) =>
                 >
                     <i className="fas fa-info-circle"></i>
                 </button>
+                <button className="mute" onClick={onToggleMute}>
+                    {isMuted ? 'Unmute' : 'Mute'}
+                </button>
             </div>
 
             {isInfoDialogOpen && <InfoDialog onClose={() => setIsInfoDialogOpen(false)}/>}
@@ -41,6 +44,8 @@ Header.propTypes = {
     onOpenNewGame: PropTypes.func.isRequired,
     onOpenImageGenerator: PropTypes.func.isRequired,
     onImageGenerated: PropTypes.func.isRequired,
+    onToggleMute: PropTypes.func.isRequired,
+    isMuted: PropTypes.bool.isRequired,
 };
 
 export default Header;

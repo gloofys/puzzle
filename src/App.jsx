@@ -15,6 +15,13 @@ function App() {
     const [isNewGameDialogOpen, setIsNewGameDialogOpen] = useState(false);
     const [isImageGeneratorOpen, setIsImageGeneratorOpen] = useState(false);
     const [gameId, setGameId] = useState(0); // Unique identifier for each game
+    const [isMuted, setIsMuted] = useState(false);
+
+    // Toggle mute/unmute state
+    const toggleMute = () => {
+        setIsMuted((prev) => !prev);
+        console.log('isMuted in App:', isMuted);
+    };
 
     // Start a new game
     const handleNewGame = ({ rows, columns, image = '/est_forest_vary.png' }) => {
@@ -49,6 +56,8 @@ function App() {
                         setIsImageGeneratorOpen(true);
                     }}
                     onImageGenerated={handleGeneratedImage}
+                    onToggleMute={toggleMute}
+                    isMuted={isMuted}
                 />
                 <main className="game-wrapper">
                     <GameBoard
@@ -57,6 +66,7 @@ function App() {
                         rows={rows}
                         columns={columns}
                         image={image}
+                        isMuted={isMuted}
                     />
                 </main>
 

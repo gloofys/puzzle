@@ -6,58 +6,54 @@ import PuzzleImage from './PuzzleImage.jsx';
 import successSound from '/src/assets/sounds/success.mp3';
 import completedSound from '/src/assets/sounds/completed.mp3';
 
-const SNAP_TOLERANCE = 70;
+const SNAP_TOLERANCE = 120;
 
 // eslint-disable-next-line react/prop-types
-const GameBoard = ({ bgColor, rows, columns, image }) => {
+const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
     const [isPuzzleComplete, setIsPuzzleComplete] = useState(false);
+
     const piecesRef = useRef(pieces);
+    const currentPlayingAudio = useRef(null); // Track currently playing audio
+    const isMutedRef = useRef(isMuted); // Track the latest value of isMuted
+
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
 
-    // Initialize audio objects with useRef (persist across renders)
-    const successAudioRef = useRef(null);
-    const completionAudioRef = useRef(null);
+    const stopAudio = () => {
+        if (currentPlayingAudio.current) {
+            currentPlayingAudio.current.pause();
+            currentPlayingAudio.current.currentTime = 0;
+            currentPlayingAudio.current = null;
+        }
+    };
 
-    // Set up audio objects once when the component mounts
+    const playSound = (sound) => {
+        if (isMutedRef.current) return; // Skip playback if muted
+        stopAudio(); // Stop any ongoing audio
+        const audio = new Audio(sound);
+        currentPlayingAudio.current = audio; // Track the playing audio
+        audio.currentTime = 0;
+        audio.play().catch((err) => console.error('Audio playback error:', err));
+    };
+
     useEffect(() => {
-        successAudioRef.current = new Audio(successSound);
-        completionAudioRef.current = new Audio(completedSound);
-
-        return () => {
-            // Clean up audio resources when the component unmounts
-            successAudioRef.current = null;
-            completionAudioRef.current = null;
-        };
-    }, []);
-
-    const playSuccessSound = () => {
-        const audio = successAudioRef.current;
-        if (audio) {
-            audio.currentTime = 0; // Reset to the start
-            audio.play();
+        isMutedRef.current = isMuted; // Synchronize isMutedRef with the latest value
+        if (isMuted) {
+            stopAudio(); // Immediately stop any playing sound when muted
         }
-    };
-
-    const playCompletionSound = () => {
-        const audio = completionAudioRef.current;
-        if (audio) {
-            audio.currentTime = 0; // Reset to the start
-            audio.play();
-        }
-    };
+    }, [isMuted]);
 
     useEffect(() => {
         setPositions([]);
         setLockedPositions([]);
+        setIsPuzzleComplete(false);
         setZIndexes({});
         setZIndexCounter(100);
         // Do not reset pieces here, as PuzzleImage will set them
     }, [rows, columns]);
-
 
     useEffect(() => {
         piecesRef.current = pieces;
@@ -87,18 +83,36 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
                             x: correctPosition.correctX,
                             y: correctPosition.correctY,
                         };
+
                         setLockedPositions((prevLocked) => {
                             const newLocked = [...prevLocked, item.index];
 
-                            // Check if this is the last piece
-                            console.log('Locked positions:', newLocked.length, 'Total pieces:', piecesRef.current.length);
+                            // Play sound logic remains separate
                             if (newLocked.length === piecesRef.current.length) {
-                                playCompletionSound(); // Play completion sound for the last piece
+                                playSound(completedSound); // Play completion sound
                             } else {
-                                playSuccessSound(); // Play success sound for other pieces
+                                playSound(successSound); // Play success sound
                             }
 
                             return newLocked;
+                        });
+
+                        // Update z-index for all pieces, ensuring no piece remains stuck below
+                        setZIndexes((prevZIndexes) => {
+                            const newZIndexes = { ...prevZIndexes };
+
+                            piecesRef.current.forEach((_, idx) => {
+                                if (!newZIndexes[idx]) {
+                                    newZIndexes[idx] = zIndexCounter + idx; // Use current zIndexCounter
+                                }
+                            });
+
+                            newZIndexes[item.index] = zIndexCounter;
+
+                            // Increment zIndexCounter outside this block
+                            setZIndexCounter((prevCounter) => prevCounter + 1);
+
+                            return newZIndexes;
                         });
                     } else {
                         // Update to the dropped position
@@ -106,26 +120,6 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
                     }
 
                     return updatedPositions;
-                });
-
-                // Update z-index for all pieces, ensuring no piece remains stuck below
-                setZIndexes((prevZIndexes) => {
-                    const newZIndexes = { ...prevZIndexes };
-
-                    // Ensure all pieces have a baseline z-index
-                    piecesRef.current.forEach((_, idx) => {
-                        if (!newZIndexes[idx]) {
-                            newZIndexes[idx] = zIndexCounter + idx;
-                        }
-                    });
-
-                    // Set the moved piece to the highest z-index
-                    newZIndexes[item.index] = zIndexCounter;
-
-                    // Increment zIndexCounter for the next interaction
-                    setZIndexCounter((prevCounter) => prevCounter + 1);
-
-                    return newZIndexes;
                 });
             }
         },
@@ -148,4 +142,5 @@ const GameBoard = ({ bgColor, rows, columns, image }) => {
         </div>
     );
 };
+
 export default GameBoard;
