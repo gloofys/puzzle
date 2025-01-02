@@ -28,8 +28,8 @@ const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator, onTo
                 >
                     <i className="fas fa-info-circle"></i>
                 </button>
-                <button className="mute" onClick={onToggleMute}>
-                    {isMuted ? 'Unmute' : 'Mute'}
+                <button className="mute" onClick={onToggleMute} aria-label={isMuted ? 'Unmute' : 'Mute'}>
+                    <i className={`${isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up'} fa-fw`}></i>
                 </button>
             </div>
 
