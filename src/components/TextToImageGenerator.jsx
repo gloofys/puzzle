@@ -31,7 +31,10 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
             const response = await axios.post(
                 "/api/generate.js", // Your serverless backend endpoint
                 { prompt },
-                { responseType: "arraybuffer" } // Ensure binary response type for images
+                {
+                    responseType: "arraybuffer", // Ensure binary response type for images
+                    timeout: 60000, // Set timeout to 60 seconds (adjust as needed)
+                }
             );
 
             const imageBlob = new Blob([response.data], { type: "image/png" });
@@ -39,9 +42,12 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
 
             onImageGenerated(imageUrl, selectedSize);
             setIsLoading(false);
-            // eslint-disable-next-line no-unused-vars
         } catch (error) {
-            setError("Failed to generate image. Please try again later.");
+            if (error.code === "ECONNABORTED") {
+                setError("Request timed out. Please try again later.");
+            } else {
+                setError("Failed to generate image. Please try again later.");
+            }
             setIsLoading(false);
         }
     };

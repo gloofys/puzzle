@@ -1,45 +1,54 @@
 export default async function handler(req, res) {
     // eslint-disable-next-line no-undef
-    const API_KEY = process.env.API_KEY; // Securely access the API key from environment variables
+    const API_KEY = process.env.API_KEY;
 
-    // Allow only POST requests
     if (req.method !== "POST") {
-        console.error("Method not allowed. Only POST is supported.");
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const requestData = req.body; // The data sent from your frontend
+    const requestData = req.body;
 
     try {
-        console.log("Received request with data:", requestData);
+        let retries = 5; // Number of retries
+        let response;
 
-        // Make a request to the external API (e.g., Hugging Face)
-        const response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${API_KEY}`, // Use the API key for authorization
-            },
-            body: JSON.stringify({ inputs: requestData.prompt }), // Send the request payload
-        });
+        do {
+            console.log(`Attempting API call. Retries left: ${retries}`);
+            response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({ inputs: requestData.prompt }),
+            });
 
-        console.log(`External API responded with status: ${response.status}`);
+            if (response.ok) break;
 
-        if (!response.ok) {
+            const errorData = await response.json();
+            console.error(`API Error: ${response.status} - ${JSON.stringify(errorData)}`);
+
+            // If model is loading, wait before retrying
+            if (response.status === 503 && errorData.error.includes("currently loading")) {
+                console.log("Model is still loading. Retrying...");
+                await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 5 seconds
+            }
+
+            retries--;
+        } while (retries > 0);
+
+        if (!response || !response.ok) {
             const errorText = await response.text();
-            console.error(`API Error: ${response.status} - ${errorText}`);
-            return res.status(response.status).json({ error: `API error: ${response.statusText}` });
+            console.error(`Final API Error: ${response?.status} - ${errorText}`);
+            return res.status(response?.status || 500).json({ error: `API error: ${response?.statusText || "Unknown error"}` });
         }
 
-        const data = await response.arrayBuffer(); // Parse the image response as binary data
-        console.log("Successfully received response from external API");
-
-        res.setHeader("Content-Type", "image/png"); // Set the response type to an image
+        const data = await response.arrayBuffer();
+        res.setHeader("Content-Type", "image/png");
         // eslint-disable-next-line no-undef
-        return res.status(200).send(Buffer.from(data)); // Send the image back to the frontend
+        return res.status(200).send(Buffer.from(data));
     } catch (error) {
         console.error("Serverless Function Error:", error.message);
-        console.error("Stack trace:", error.stack);
         return res.status(500).json({ error: "Something went wrong." });
     }
 }
