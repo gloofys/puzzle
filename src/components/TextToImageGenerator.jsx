@@ -26,21 +26,12 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     const handleGenerateImage = async () => {
         setIsLoading(true);
         setError("");
-        const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
-        const API_KEY = import.meta.env.VITE_HUGGING_FACE_API_KEY;
 
         try {
             const response = await axios.post(
-                API_URL,
-                { inputs: prompt },
-                {
-                    headers: {
-                        Authorization: `Bearer ${API_KEY}`,
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    responseType: "arraybuffer",
-                }
+                "/api/generate.js", // Your serverless backend endpoint
+                { prompt },
+                { responseType: "arraybuffer" } // Ensure binary response type for images
             );
 
             const imageBlob = new Blob([response.data], { type: "image/png" });
