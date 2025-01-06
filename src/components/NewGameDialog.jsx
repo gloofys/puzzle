@@ -28,6 +28,8 @@ const NewGameDialog = ({ onStartGame, onClose }) => {
         setSelectedSize(size);
     };
 
+    const handleImageClick = (src)=>{setSelectedImage(src)}
+
     const handleStartGame = () => {
         onStartGame({ rows: selectedSize.rows, columns: selectedSize.columns, image: selectedImage });
     };
@@ -52,19 +54,19 @@ const NewGameDialog = ({ onStartGame, onClose }) => {
                         </button>
                     ))}
                 </div>
-                <label>
-                    Select Image:
-                    <select
-                        value={selectedImage}
-                        onChange={(e) => setSelectedImage(e.target.value)}
-                    >
-                        {availableImages.map((img) => (
-                            <option key={img.src} value={img.src}>
-                                {img.name}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+                <p>Select Image:</p>
+                <div className="image-gallery">
+                    {availableImages.map((img) => (
+                        <div
+                            key={img.src}
+                            className={`image-thumbnail ${selectedImage === img.src ? 'selected' : ''}`}
+                            onClick={() => handleImageClick(img.src)}
+                        >
+                            <img src={img.src} alt={img.name} />
+                            <p>{img.name}</p>
+                        </div>
+                    ))}
+                </div>
                 <button className="start-game-button" onClick={handleStartGame}>Start Game</button>
             </div>
         </div>
