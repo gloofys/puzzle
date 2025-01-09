@@ -72,3 +72,9 @@
     color: red;
     font-size: 0.9em;
 }
+
+.error-border {
+    border: 2px solid red;
+    outline: none;
+    border-radius: 4px;
+}

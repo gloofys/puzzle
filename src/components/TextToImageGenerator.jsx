@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import "/src/assets/TextToImageGenerator.css";
@@ -10,6 +10,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedSize, setSelectedSize] = useState({ rows: 4, columns: 4 });
     const [error, setError] = useState("");
+    const [hasTextError, setHasTextError] = useState(false);
 
     const gridSizes = [
         { rows: 2, columns: 2 },
@@ -24,16 +25,24 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     ];
 
     const handleGenerateImage = async () => {
-        setIsLoading(true);
+        if (prompt.trim().length < 1) {
+            setError("Please enter a description to generate an image.");
+            setHasTextError(true); // Add the red border
+            return; // Prevent the rest of the function from executing
+        }
+
+        // Clear the error if validation passes
+        setHasTextError(false);
         setError("");
+        setIsLoading(true);
 
         try {
             const response = await axios.post(
-                "/api/generate.js", // Your serverless backend endpoint
+                "/api/generate.js",
                 { prompt },
                 {
-                    responseType: "arraybuffer", // Ensure binary response type for images
-                    timeout: 60000, // Set timeout to 60 seconds (adjust as needed)
+                    responseType: "arraybuffer",
+                    timeout: 60000,
                 }
             );
 
@@ -52,6 +61,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
         }
     };
 
+
     return (
         <div className="text-to-image-generator-container">
             <div className="dialog-overlay" onClick={onClose}></div>
@@ -62,9 +72,13 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
                 <h3>Generate Puzzle Image</h3>
                 <textarea
                     value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
+                    onChange={(e) => {
+                        setPrompt(e.target.value);
+                        setHasTextError(false); // Clear the error when the user types
+                    }}
                     placeholder="Describe your image..."
                     rows="3"
+                    className={hasTextError ? "error-border" : ""} // Add error-border class dynamically
                 />
                 <div className="grid-size-buttons">
                     <p>Select Grid Size:</p>
@@ -86,7 +100,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
                 <button
                     className="generate-button"
                     onClick={handleGenerateImage}
-                    disabled={isLoading || !prompt.trim()}
+                    disabled={isLoading} // Only disable when loading
                 >
                     {isLoading ? "Generating..." : "Generate Image"}
                 </button>
