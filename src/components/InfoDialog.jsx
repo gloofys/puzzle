@@ -22,6 +22,8 @@ const InfoDialog = ({ onClose }) => {
                     5. <strong>Try changing the background color:</strong> Use the colored circles in the header to
                     adjust the background color. This can make puzzle pieces easier to see and align correctly.
                 </p>
+                <p>6. <strong>Control game sounds:</strong> Use the Mute/Unmute button in the header to toggle sounds on
+                    or off.</p>
                 <p>6. Complete the puzzle to win the game!</p>
             </div>
         </div>
