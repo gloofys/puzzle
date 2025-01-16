@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import BackgroundColorSelector from './BackgroundColorSelector';
-import InfoDialog from './InfoDialog'; // Import the InfoDialog component
+import InfoDialog from './InfoDialog';
 import { useState } from 'react';
 import '/src/assets/Header.css';
 
 const Header = ({ bgColor, setBgColor, onOpenNewGame, onOpenImageGenerator, onToggleMute, isMuted }) => {
-    // Set the initial state to true
     const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(true);
 
     return (

@@ -6,7 +6,6 @@ import {useState} from "react";
 const DragAndDropTest = () => {
     const [boxPosition, setBoxPosition] = useState({ x: 0, y: 0 });
 
-    // Draggable box logic
     const DraggableBox = () => {
         const [{ isDragging }, drag] = useDrag(() => ({
             type: 'box',
