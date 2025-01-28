@@ -41,6 +41,7 @@ function App() {
         setIsImageGeneratorOpen(false);
     };
 
+
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="app-container">
