@@ -104,10 +104,12 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
                 >
                     {isLoading ? "Generating..." : "Generate Image"}
                 </button>
+                <div className="helper-text">
                 <p>
                     Our AI image generator might take upto five minutes to warm up the first time you use it.
                     Subsequent generations will be much faster. Thank you for your patience!
                 </p>
+                </div>
             </div>
 
         </div>
