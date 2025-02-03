@@ -18,7 +18,7 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
 
             const gameAreaHeight = gameBoardHeight - headerHeight;
 
-            // Define puzzle area as 80% of the GameBoard size
+            // Define puzzle area as % of the GameBoard size
             const puzzleAreaWidth = gameBoardWidth * 0.6;
             const puzzleAreaHeight = gameBoardHeight * 0.6;
 
@@ -93,7 +93,7 @@ PuzzleImage.propTypes = {
     setInitialPositions: PropTypes.func.isRequired,
     rows: PropTypes.number.isRequired,
     columns: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired, // New prop for the selected image
+    image: PropTypes.string.isRequired,
 };
 
 export default PuzzleImage;

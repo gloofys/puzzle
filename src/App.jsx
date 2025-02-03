@@ -50,10 +50,10 @@ function App() {
                     setBgColor={setBgColor}
                     onOpenNewGame={() => {
                         setIsNewGameDialogOpen(true);
-                        setIsImageGeneratorOpen(false); // Ensure the AI generator is closed
+                        setIsImageGeneratorOpen(false);
                     }}
                     onOpenImageGenerator={() => {
-                        setIsNewGameDialogOpen(false); // Ensure the New Game dialog is closed
+                        setIsNewGameDialogOpen(false);
                         setIsImageGeneratorOpen(true);
                     }}
                     onImageGenerated={handleGeneratedImage}
@@ -74,14 +74,14 @@ function App() {
                 {isNewGameDialogOpen && (
                     <NewGameDialog
                         onStartGame={handleNewGame}
-                        onClose={() => setIsNewGameDialogOpen(false)} // Close dialog when "X" is clicked
+                        onClose={() => setIsNewGameDialogOpen(false)}
                     />
                 )}
 
                 {isImageGeneratorOpen && (
                     <TextToImageGenerator
                         onImageGenerated={handleGeneratedImage}
-                        onClose={() => setIsImageGeneratorOpen(false)} // Close Image Generator
+                        onClose={() => setIsImageGeneratorOpen(false)}
                     />
                 )}
             </div>

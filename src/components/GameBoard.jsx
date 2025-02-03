@@ -16,8 +16,8 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     const [isPuzzleComplete, setIsPuzzleComplete] = useState(false);
 
     const piecesRef = useRef(pieces);
-    const currentPlayingAudio = useRef(null); // Track currently playing audio
-    const isMutedRef = useRef(isMuted); // Track the latest value of isMuted
+    const currentPlayingAudio = useRef(null);
+    const isMutedRef = useRef(isMuted);
 
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
@@ -31,18 +31,18 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     };
 
     const playSound = (sound) => {
-        if (isMutedRef.current) return; // Skip playback if muted
-        stopAudio(); // Stop any ongoing audio
+        if (isMutedRef.current) return;
+        stopAudio();
         const audio = new Audio(sound);
-        currentPlayingAudio.current = audio; // Track the playing audio
+        currentPlayingAudio.current = audio;
         audio.currentTime = 0;
         audio.play().catch((err) => console.error('Audio playback error:', err));
     };
 
     useEffect(() => {
-        isMutedRef.current = isMuted; // Synchronize isMutedRef with the latest value
+        isMutedRef.current = isMuted;
         if (isMuted) {
-            stopAudio(); // Immediately stop any playing sound when muted
+            stopAudio();
         }
     }, [isMuted]);
 
@@ -52,7 +52,7 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
         setIsPuzzleComplete(false);
         setZIndexes({});
         setZIndexCounter(100);
-        // Do not reset pieces here, as PuzzleImage will set them
+
     }, [rows, columns]);
 
     useEffect(() => {
@@ -89,9 +89,9 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
 
                             // Play sound logic remains separate
                             if (newLocked.length === piecesRef.current.length) {
-                                playSound(completedSound); // Play completion sound
+                                playSound(completedSound);
                             } else {
-                                playSound(successSound); // Play success sound
+                                playSound(successSound);
                             }
 
                             return newLocked;
@@ -103,19 +103,18 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
 
                             piecesRef.current.forEach((_, idx) => {
                                 if (!newZIndexes[idx]) {
-                                    newZIndexes[idx] = zIndexCounter + idx; // Use current zIndexCounter
+                                    newZIndexes[idx] = zIndexCounter + idx;
                                 }
                             });
 
                             newZIndexes[item.index] = zIndexCounter;
 
-                            // Increment zIndexCounter outside this block
+
                             setZIndexCounter((prevCounter) => prevCounter + 1);
 
                             return newZIndexes;
                         });
                     } else {
-                        // Update to the dropped position
                         updatedPositions[item.index] = { x: offset.x, y: offset.y };
                     }
 

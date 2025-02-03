@@ -6,7 +6,7 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'puzzle-piece',
         item: { index },
-        canDrag: !isLocked, // Disable dragging if the piece is locked
+        canDrag: !isLocked,
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
@@ -15,15 +15,15 @@ const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex
     useEffect(() => {
     }, [index, position]);
 
-    // Calculate distance between the current position and the correct position for opacity
+
     const distance = Math.sqrt(
         Math.pow(position.x - piece.correctX, 2) + Math.pow(position.y - piece.correctY, 2)
     );
-    const calculatedOpacity = Math.max(0.25, 1 - distance / 900); // Adjust sensitivity if needed
+    const calculatedOpacity = Math.max(0.25, 1 - distance / 900);
 
     return (
         <img
-            ref={isLocked ? null : drag} // Only attach `drag` ref if not locked
+            ref={isLocked ? null : drag}
             src={piece.src}
             alt={`Puzzle piece ${index}`}
             className="puzzle-piece"
@@ -53,7 +53,7 @@ PuzzlePiece.propTypes = {
     }).isRequired,
     isLocked: PropTypes.bool.isRequired,
     zIndex: PropTypes.number.isRequired,
-    isPuzzleComplete: PropTypes.bool.isRequired, // Ensure completion status is passed as a prop
+    isPuzzleComplete: PropTypes.bool.isRequired,
 };
 
 export default PuzzlePiece;
