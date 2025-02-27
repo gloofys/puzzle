@@ -75,7 +75,7 @@ const NewGameDialog = ({ onStartGame, onClose }) => {
 
 NewGameDialog.propTypes = {
     onStartGame: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired, // Add the onClose prop
+    onClose: PropTypes.func.isRequired,
 };
 
 export default NewGameDialog;
