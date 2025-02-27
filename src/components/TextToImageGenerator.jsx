@@ -74,11 +74,11 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
                     value={prompt}
                     onChange={(e) => {
                         setPrompt(e.target.value);
-                        setHasTextError(false); // Clear the error when the user types
+                        setHasTextError(false);
                     }}
                     placeholder="Describe your image..."
                     rows="3"
-                    className={hasTextError ? "error-border" : ""} // Add error-border class dynamically
+                    className={hasTextError ? "error-border" : ""}
                 />
                 <div className="grid-size-buttons">
                     <p>Select Grid Size:</p>
@@ -100,7 +100,7 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
                 <button
                     className="generate-button"
                     onClick={handleGenerateImage}
-                    disabled={isLoading} // Only disable when loading
+                    disabled={isLoading}
                 >
                     {isLoading ? "Generating..." : "Generate Image"}
                 </button>
