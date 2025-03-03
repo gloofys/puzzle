@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '/src/assets/PuzzlePieces.css';
 
-const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) => {
+const PuzzleImage = ({ setPieces, setInitialPositions, setPuzzleArea, rows, columns, image }) => {
     useEffect(() => {
         const img = new Image();
         img.src = image;
@@ -25,6 +25,16 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
             // Calculate offset to center the puzzle area within GameBoard
             const offsetX = (gameBoardWidth - puzzleAreaWidth) / 2;
             const offsetY = headerHeight + (gameAreaHeight - puzzleAreaHeight) / 2;
+
+            // Pass puzzle area info to parent component
+            if (setPuzzleArea) {
+                setPuzzleArea({
+                    offsetX,
+                    offsetY,
+                    width: puzzleAreaWidth,
+                    height: puzzleAreaHeight,
+                });
+            }
 
             const scaleX = puzzleAreaWidth / img.width;
             const scaleY = puzzleAreaHeight / img.height;
@@ -83,7 +93,7 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
 
         img.onerror = () => {
         };
-    }, [setPieces, setInitialPositions, rows, columns, image]);
+    }, [setPieces, setInitialPositions, setPuzzleArea, rows, columns, image]);
 
     return null;
 };
@@ -91,6 +101,7 @@ const PuzzleImage = ({ setPieces, setInitialPositions, rows, columns, image }) =
 PuzzleImage.propTypes = {
     setPieces: PropTypes.func.isRequired,
     setInitialPositions: PropTypes.func.isRequired,
+    setPuzzleArea: PropTypes.func, // New optional prop for passing puzzle area info
     rows: PropTypes.number.isRequired,
     columns: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,

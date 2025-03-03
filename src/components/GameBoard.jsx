@@ -14,6 +14,7 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
     const [isPuzzleComplete, setIsPuzzleComplete] = useState(false);
+    const [puzzleArea, setPuzzleArea] = useState(null); // New state for puzzle area
 
     const piecesRef = useRef(pieces);
     const currentPlayingAudio = useRef(null);
@@ -125,8 +126,28 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     }));
 
     return (
-        <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor }}>
-            <PuzzleImage setPieces={setPieces} setInitialPositions={setPositions} rows={rows} columns={columns} image={image} />
+        <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor}}>
+            {/* PuzzleImage now also sets the puzzle area dimensions */}
+            <PuzzleImage
+                setPieces={setPieces}
+                setInitialPositions={setPositions}
+                setPuzzleArea={setPuzzleArea}
+                rows={rows}
+                columns={columns}
+                image={image}
+            />
+            {/* Border container overlaying the assembled puzzle area */}
+            {puzzleArea && !isPuzzleComplete && (
+                <div
+                    className="puzzle-container-border"
+                    style={{
+                        "--offsetX": `${puzzleArea.offsetX}px`,
+                        "--offsetY": `${puzzleArea.offsetY}px`,
+                        "--puzzleWidth": `${puzzleArea.width}px`,
+                        "--puzzleHeight": `${puzzleArea.height}px`,
+                    }}
+                />
+            )}
             {pieces.map((piece, index) => (
                 <PuzzlePiece
                     key={index}
