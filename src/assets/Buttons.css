@@ -18,56 +18,56 @@
 }
 
 .new-game-dialog .close-button {
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-    cursor: pointer; /* Keep the pointer cursor */
-    font-size: 1.3rem; /* Make the cross larger */
-    background: none; /* Remove background */
-    border: none; /* Remove border */
-    color: #333; /* Set a suitable color */
-    position: absolute; /* Position it */
-    top: 10px; /* Adjust positioning */
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: 1.3rem;
+    background: none;
+    border: none;
+    color: #333;
+    position: absolute;
+    top: 10px;
     right: 10px;
 }
 
 .new-game-dialog .close-button:hover {
-    color: #ff0000; /* Optional: Change color on hover */
+    color: #ff0000;
 }
 
 .text-to-image-generator .close-button:hover{
-    color: #ff0000; /* Optional: Change color on hover */
+    color: #ff0000;
 }
 
 .text-to-image-generator .close-button {
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-    cursor: pointer; /* Keep the pointer cursor */
-    font-size: 1.3rem; /* Make the cross larger */
-    background: none; /* Remove background */
-    border: none; /* Remove border */
-    color: #333; /* Set a suitable color */
-    position: absolute; /* Position it */
-    top: 10px; /* Adjust positioning */
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    font-size: 1.3rem;
+    background: none;
+    border: none;
+    color: #333;
+    position: absolute;
+    top: 10px;
     right: 10px;
 }
 
 .info-icon-button i {
-    font-size: 1.5rem; /* Adjust icon size */
+    font-size: 1.5rem;
     color: #000;
 }
 
 .start-game-button {
-    background-color: #4caf50; /* Green background */
-    color: white; /* White text */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 20px; /* Add padding */
-    font-size: 16px; /* Increase font size */
-    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
     margin-left: 0;
 }
 
 .start-game-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
 }
 

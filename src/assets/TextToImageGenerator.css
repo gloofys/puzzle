@@ -46,7 +46,6 @@
     padding: 5px;
 }
 
-/* Only apply styles to the generate button */
 .text-to-image-generator .generate-button {
     padding: 5px 10px;
     background-color: #4caf50;

@@ -50,9 +50,9 @@ html, body {
     top: var(--offsetY);
     width: var(--puzzleWidth);
     height: var(--puzzleHeight);
-    border: 2px solid #83d5b5; /* Adjust thickness and color as needed */
+    border: 2px solid #83d5b5;
     box-sizing: border-box;
-    pointer-events: none; /* Ensure it doesn't block drag events */
+    pointer-events: none; /* don't block drag events */
     box-shadow: 0 0 0.2rem rgba(0, 255, 153, 0.69), 0 0 0.4rem rgba(0, 255, 153, 0.76), 0 0 0.6rem rgba(0, 255, 153, 0.94);
     z-index: 0;
 }

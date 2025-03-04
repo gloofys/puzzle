@@ -18,7 +18,7 @@ html, body {
   color: white;
   padding: 1rem;
   text-align: center;
-  flex-shrink: 0; /* Prevents shrinking */
+  flex-shrink: 0;
 }
 
 .game-wrapper {
@@ -29,8 +29,8 @@ html, body {
 }
 
 .game-board-wrapper {
-  width: 80vw; /* 80% of viewport width */
-  height: 80vh; /* 80% of viewport height */
+  width: 80vw;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;

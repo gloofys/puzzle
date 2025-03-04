@@ -39,8 +39,8 @@ button:hover {
 }
 
 .info-icon-button {
-    width: 40px; /* Set a fixed width */
-    height: 40px; /* Set a fixed height */
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@ button:hover {
 }
 
 .info-icon-button i {
-    font-size: 1rem; /* Match other buttons' text size */
+    font-size: 1rem;
 }
 
 .text-to-image-generator {

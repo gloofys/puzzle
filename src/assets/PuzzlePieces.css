@@ -1,8 +1,8 @@
 .puzzle-piece {
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    border: 1px solid #ccc; /* Optional border for visibility */
-    object-fit: cover; /* Ensure the image fills the piece without distortion */
-    cursor: pointer; /* Pointer cursor to indicate interactivity */
-    position: absolute; /* Needed for free placement */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    object-fit: cover;
+    cursor: pointer;
+    position: absolute;
 
 }
