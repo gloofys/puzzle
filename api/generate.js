@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     try {
         const { response, attempts } = await retryFetch(
-            "https://api-inference.huggingface.co/models/prompthero/openjourney",
+            "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
             {
                 method: "POST",
                 headers: {
