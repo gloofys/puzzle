@@ -17,13 +17,11 @@ function App() {
     const [gameId, setGameId] = useState(0); // Unique identifier for each game
     const [isMuted, setIsMuted] = useState(false);
 
-    // Toggle mute/unmute state
     const toggleMute = () => {
         setIsMuted((prev) => !prev);
         console.log('isMuted in App:', isMuted);
     };
 
-    // Start a new game
     const handleNewGame = ({ rows, columns, image = '/est_forest_vary.png' }) => {
         setRows(rows);
         setColumns(columns);
@@ -32,12 +30,11 @@ function App() {
         setIsNewGameDialogOpen(false);
     };
 
-    // Handle AI-generated image
     const handleGeneratedImage = (generatedImage, gridSize) => {
         setImage(generatedImage);
         setRows(gridSize.rows);
         setColumns(gridSize.columns);
-        setGameId((prevGameId) => prevGameId + 1); // Restart the game with new image and grid
+        setGameId((prevGameId) => prevGameId + 1);
         setIsImageGeneratorOpen(false);
     };
 
@@ -62,7 +59,7 @@ function App() {
                 />
                 <main className="game-wrapper">
                     <GameBoard
-                        key={gameId} // Force re-render with unique game ID
+                        key={gameId}
                         bgColor={bgColor}
                         rows={rows}
                         columns={columns}

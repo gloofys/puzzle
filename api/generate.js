@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     try {
         const { response, attempts } = await retryFetch(
-            "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2",
+            "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
             {
                 method: "POST",
                 headers: {
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
 async function retryFetch(url, options, maxRetries, delay) {
     let response;
-    let attempts = 0; // Track the number of attempts
+    let attempts = 0;
 
     for (attempts = 0; attempts <= maxRetries; attempts++) {
         try {
@@ -64,11 +64,11 @@ async function retryFetch(url, options, maxRetries, delay) {
                     continue;
                 }
             }
-            break; // Exit loop on non-retriable error
+            break;
         } catch (error) {
             console.error("Fetch error:", error.message);
-            if (attempts === maxRetries) throw error; // Rethrow error if retries exhausted
-            await new Promise((resolve) => setTimeout(resolve, delay)); // Retry delay
+            if (attempts === maxRetries) throw error;
+            await new Promise((resolve) => setTimeout(resolve, delay));
         }
     }
 
