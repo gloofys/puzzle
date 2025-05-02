@@ -14,7 +14,7 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
     const [isPuzzleComplete, setIsPuzzleComplete] = useState(false);
-    const [puzzleArea, setPuzzleArea] = useState(null); // New state for puzzle area
+    const [puzzleArea, setPuzzleArea] = useState(null);
 
     const piecesRef = useRef(pieces);
     const currentPlayingAudio = useRef(null);
@@ -88,7 +88,7 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
                         setLockedPositions((prevLocked) => {
                             const newLocked = [...prevLocked, item.index];
 
-                            // Play sound logic remains separate
+
                             if (newLocked.length === piecesRef.current.length) {
                                 playSound(completedSound);
                             } else {
@@ -127,7 +127,6 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
 
     return (
         <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor}}>
-            {/* PuzzleImage now also sets the puzzle area dimensions */}
             <PuzzleImage
                 setPieces={setPieces}
                 setInitialPositions={setPositions}
@@ -136,7 +135,6 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
                 columns={columns}
                 image={image}
             />
-            {/* Border container overlaying the assembled puzzle area */}
             {puzzleArea && !isPuzzleComplete && (
                 <div
                     className="puzzle-container-border"
