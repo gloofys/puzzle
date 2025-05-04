@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import {useState, useEffect, useRef, useMemo} from 'react';
 import { useDrop } from 'react-dnd';
 import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
@@ -23,6 +23,17 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     const [zIndexes, setZIndexes] = useState({});
     const [zIndexCounter, setZIndexCounter] = useState(100);
 
+    const successAudio = useMemo(() => {
+        const a = new Audio(successSound);
+        a.preload = 'auto';
+        return a;
+    }, []);
+    const completedAudio = useMemo(() => {
+        const a = new Audio(completedSound);
+        a.preload = 'auto';
+        return a;
+    }, []);
+
     const stopAudio = () => {
         if (currentPlayingAudio.current) {
             currentPlayingAudio.current.pause();
@@ -31,13 +42,16 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
         }
     };
 
-    const playSound = (sound) => {
+    const playSound = (type) => {
         if (isMutedRef.current) return;
-        stopAudio();
-        const audio = new Audio(sound);
+        if (currentPlayingAudio.current) {
+            currentPlayingAudio.current.pause();
+            currentPlayingAudio.current.currentTime = 0;
+        }
+        const audio = type === 'complete' ? completedAudio : successAudio;
         currentPlayingAudio.current = audio;
         audio.currentTime = 0;
-        audio.play().catch((err) => console.error('Audio playback error:', err));
+        audio.play().catch(() => {});
     };
 
     useEffect(() => {
@@ -90,9 +104,9 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
 
 
                             if (newLocked.length === piecesRef.current.length) {
-                                playSound(completedSound);
+                                playSound('complete');
                             } else {
-                                playSound(successSound);
+                                playSound('success');
                             }
 
                             return newLocked;
