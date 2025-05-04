@@ -27,8 +27,8 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
     const handleGenerateImage = async () => {
         if (prompt.trim().length < 1) {
             setError("Please enter a description to generate an image.");
-            setHasTextError(true); // Add the red border
-            return; // Prevent the rest of the function from executing
+            setHasTextError(true);
+            return;
         }
 
         // Clear the error if validation passes
@@ -106,8 +106,9 @@ const TextToImageGenerator = ({ onImageGenerated, onClose }) => {
                 </button>
                 <div className="helper-text">
                 <p>
-                    Our AI image generator might take upto five minutes to warm up the first time you use it.
-                    Subsequent generations will be much faster. Thank you for your patience!
+                    The AI image generator may take up to five minutes to warm up the first time you use it.
+                    During that period, some requests might time out or fail—if that happens, please try again. Subsequent generations will be much faster.
+                    Thank you for your patience!
                 </p>
                 </div>
             </div>
