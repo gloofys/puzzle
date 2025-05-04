@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import '/src/assets/PuzzlePieces.css';
 
@@ -89,7 +89,8 @@ const PuzzleImage = ({
             setInitialPositions(initialPositions);
         };
 
-        img.onerror = () => {};
+        img.onerror = () => {
+        };
     }, [setPieces, setInitialPositions, setPuzzleArea, rows, columns, image]);
 
     return null;
@@ -104,4 +105,10 @@ PuzzleImage.propTypes = {
     image: PropTypes.string.isRequired,
 };
 
-export default PuzzleImage;
+export default React.memo(
+    PuzzleImage,
+    (prev, next) =>
+        prev.rows === next.rows &&
+        prev.columns === next.columns &&
+        prev.image === next.image
+);

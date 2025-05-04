@@ -1,5 +1,6 @@
+// src/components/GameBoard.jsx
 import {useState, useEffect, useRef, useMemo} from 'react';
-import { useDrop } from 'react-dnd';
+import {useDrop} from 'react-dnd';
 import '/src/assets/GameBoard.css';
 import PuzzlePiece from './PuzzlePiece.jsx';
 import PuzzleImage from './PuzzleImage.jsx';
@@ -9,7 +10,7 @@ import completedSound from '/src/assets/sounds/completed.mp3';
 const SNAP_TOLERANCE = 120;
 
 // eslint-disable-next-line react/prop-types
-const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
+const GameBoard = ({bgColor, rows, columns, image, isMuted}) => {
     const [positions, setPositions] = useState([]);
     const [pieces, setPieces] = useState([]);
     const [lockedPositions, setLockedPositions] = useState([]);
@@ -21,7 +22,9 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     const isMutedRef = useRef(isMuted);
 
     const [zIndexes, setZIndexes] = useState({});
-    const [zIndexCounter, setZIndexCounter] = useState(100);
+
+    const zIndexCounterRef = useRef(100);
+
 
     const successAudio = useMemo(() => {
         const a = new Audio(successSound);
@@ -51,14 +54,13 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
         const audio = type === 'complete' ? completedAudio : successAudio;
         currentPlayingAudio.current = audio;
         audio.currentTime = 0;
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+        });
     };
 
     useEffect(() => {
         isMutedRef.current = isMuted;
-        if (isMuted) {
-            stopAudio();
-        }
+        if (isMuted) stopAudio();
     }, [isMuted]);
 
     useEffect(() => {
@@ -66,8 +68,7 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
         setLockedPositions([]);
         setIsPuzzleComplete(false);
         setZIndexes({});
-        setZIndexCounter(100);
-
+        zIndexCounterRef.current = 100;
     }, [rows, columns]);
 
     useEffect(() => {
@@ -75,72 +76,71 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
     }, [pieces]);
 
     useEffect(() => {
-        if (lockedPositions.length > 0 && lockedPositions.length === pieces.length) {
+        if (
+            lockedPositions.length > 0 &&
+            lockedPositions.length === pieces.length
+        ) {
             setIsPuzzleComplete(true);
         }
     }, [lockedPositions, pieces]);
 
-    const [, drop] = useDrop(() => ({
-        accept: 'puzzle-piece',
-        drop: (item, monitor) => {
-            const offset = monitor.getSourceClientOffset();
-            if (offset && piecesRef.current[item.index]) {
-                setPositions((prevPositions) => {
-                    const updatedPositions = [...prevPositions];
-                    const correctPosition = piecesRef.current[item.index];
+    const [, drop] = useDrop(
+        () => ({
+            accept: 'puzzle-piece',
+            drop: (item, monitor) => {
+                const offset = monitor.getSourceClientOffset();
+                if (offset && piecesRef.current[item.index]) {
+                    setPositions((prev) => {
+                        const updated = [...prev];
+                        const correct = piecesRef.current[item.index];
+                        const dx = Math.abs(offset.x - correct.correctX);
+                        const dy = Math.abs(offset.y - correct.correctY);
 
-                    const distanceX = Math.abs(offset.x - correctPosition.correctX);
-                    const distanceY = Math.abs(offset.y - correctPosition.correctY);
+                        if (dx <= SNAP_TOLERANCE && dy <= SNAP_TOLERANCE) {
+                            updated[item.index] = {
+                                x: correct.correctX,
+                                y: correct.correctY,
+                            };
 
-                    if (distanceX <= SNAP_TOLERANCE && distanceY <= SNAP_TOLERANCE) {
-                        // Snap to correct position
-                        updatedPositions[item.index] = {
-                            x: correctPosition.correctX,
-                            y: correctPosition.correctY,
-                        };
-
-                        setLockedPositions((prevLocked) => {
-                            const newLocked = [...prevLocked, item.index];
-
-
-                            if (newLocked.length === piecesRef.current.length) {
-                                playSound('complete');
-                            } else {
-                                playSound('success');
-                            }
-
-                            return newLocked;
-                        });
-
-                        // Update z-index for all pieces, ensuring no piece remains stuck below
-                        setZIndexes((prevZIndexes) => {
-                            const newZIndexes = { ...prevZIndexes };
-
-                            piecesRef.current.forEach((_, idx) => {
-                                if (!newZIndexes[idx]) {
-                                    newZIndexes[idx] = zIndexCounter + idx;
-                                }
+                            setLockedPositions((prevLocked) => {
+                                const newLocked = [...prevLocked, item.index];
+                                playSound(
+                                    newLocked.length === piecesRef.current.length
+                                        ? 'complete'
+                                        : 'success'
+                                );
+                                return newLocked;
                             });
 
-                            newZIndexes[item.index] = zIndexCounter;
 
-
-                            setZIndexCounter((prevCounter) => prevCounter + 1);
-
-                            return newZIndexes;
-                        });
-                    } else {
-                        updatedPositions[item.index] = { x: offset.x, y: offset.y };
-                    }
-
-                    return updatedPositions;
-                });
-            }
-        },
-    }));
+                            setZIndexes((prevZ) => {
+                                const nextZ = {...prevZ};
+                                piecesRef.current.forEach((_, idx) => {
+                                    if (nextZ[idx] == null) {
+                                        nextZ[idx] = zIndexCounterRef.current + idx;
+                                    }
+                                });
+                                nextZ[item.index] = zIndexCounterRef.current;
+                                zIndexCounterRef.current += 1;
+                                return nextZ;
+                            });
+                        } else {
+                            updated[item.index] = {x: offset.x, y: offset.y};
+                        }
+                        return updated;
+                    });
+                }
+            },
+        }),
+        [zIndexCounterRef]
+    );
 
     return (
-        <div className="game-board-wrapper" ref={drop} style={{ backgroundColor: bgColor}}>
+        <div
+            className="game-board-wrapper"
+            ref={drop}
+            style={{backgroundColor: bgColor}}
+        >
             <PuzzleImage
                 setPieces={setPieces}
                 setInitialPositions={setPositions}
@@ -153,21 +153,21 @@ const GameBoard = ({ bgColor, rows, columns, image, isMuted }) => {
                 <div
                     className="puzzle-container-border"
                     style={{
-                        "--offsetX": `${puzzleArea.offsetX}px`,
-                        "--offsetY": `${puzzleArea.offsetY}px`,
-                        "--puzzleWidth": `${puzzleArea.width}px`,
-                        "--puzzleHeight": `${puzzleArea.height}px`,
+                        '--offsetX': `${puzzleArea.offsetX}px`,
+                        '--offsetY': `${puzzleArea.offsetY}px`,
+                        '--puzzleWidth': `${puzzleArea.width}px`,
+                        '--puzzleHeight': `${puzzleArea.height}px`,
                     }}
                 />
             )}
-            {pieces.map((piece, index) => (
+            {pieces.map((piece, idx) => (
                 <PuzzlePiece
-                    key={index}
+                    key={idx}
                     piece={piece}
-                    index={index}
-                    position={positions[index] || { x: 0, y: 0 }}
-                    isLocked={lockedPositions.includes(index)}
-                    zIndex={zIndexes[index] || 1}
+                    index={idx}
+                    position={positions[idx] || {x: 0, y: 0}}
+                    isLocked={lockedPositions.includes(idx)}
+                    zIndex={zIndexes[idx] || 1}
                     isPuzzleComplete={isPuzzleComplete}
                 />
             ))}

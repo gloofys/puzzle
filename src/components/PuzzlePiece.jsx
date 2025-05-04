@@ -1,19 +1,16 @@
-import { useEffect } from 'react';
-import { useDrag } from 'react-dnd';
+import {useDrag} from 'react-dnd';
 import PropTypes from 'prop-types';
+import React from "react";
 
-const PuzzlePiece = ({ piece, index, position = { x: 0, y: 0 }, isLocked, zIndex, isPuzzleComplete }) => {
-    const [{ isDragging }, drag] = useDrag(() => ({
+const PuzzlePiece = ({piece, index, position = {x: 0, y: 0}, isLocked, zIndex, isPuzzleComplete}) => {
+    const [{isDragging}, drag] = useDrag(() => ({
         type: 'puzzle-piece',
-        item: { index },
+        item: {index},
         canDrag: !isLocked,
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
     }));
-
-    useEffect(() => {
-    }, [index, position]);
 
 
     const distance = Math.sqrt(
@@ -56,4 +53,12 @@ PuzzlePiece.propTypes = {
     isPuzzleComplete: PropTypes.bool.isRequired,
 };
 
-export default PuzzlePiece;
+export default React.memo(
+    PuzzlePiece,
+    (prev, next) =>
+        prev.position.x === next.position.x &&
+        prev.position.y === next.position.y &&
+        prev.isLocked === next.isLocked &&
+        prev.zIndex === next.zIndex &&
+        prev.isPuzzleComplete === next.isPuzzleComplete
+);
