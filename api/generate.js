@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     try {
         const { response, attempts } = await retryFetch(
-            "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
+            "https://router.huggingface.co/models/black-forest-labs/FLUX.1-dev",
             {
                 method: "POST",
                 headers: {
@@ -23,8 +23,8 @@ export default async function handler(req, res) {
                 },
                 body: JSON.stringify({ inputs: requestData.prompt }),
             },
-            5, // maxRetries
-            5000 // delay (ms)
+            5,
+            5000
         );
 
         if (!response.ok) {
@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 
         const data = await response.arrayBuffer();
         res.setHeader("Content-Type", "image/png");
-        res.setHeader("X-Retries", attempts); // Include the number of retries
+        res.setHeader("X-Retries", attempts);
         // eslint-disable-next-line no-undef
         return res.status(200).send(Buffer.from(data));
     } catch (error) {
@@ -54,7 +54,7 @@ async function retryFetch(url, options, maxRetries, delay) {
     for (attempts = 0; attempts <= maxRetries; attempts++) {
         try {
             response = await fetch(url, options);
-            if (response.ok) return { response, attempts }; // Return response and attempts
+            if (response.ok) return { response, attempts };
 
             if (response.status === 503) {
                 const errorData = await response.json();
