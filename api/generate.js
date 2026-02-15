@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         const hf = new InferenceClient(API_KEY);
 
         const image = await hf.textToImage({
-            model: "black-forest-labs/FLUX.1-dev",
+            model: "black-forest-labs/FLUX.1-schnell",
             inputs: prompt,
             provider: "auto",
         });
